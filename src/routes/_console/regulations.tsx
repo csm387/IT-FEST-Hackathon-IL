@@ -8,9 +8,9 @@ export const Route = createFileRoute("/_console/regulations")({
   head: () => ({ meta: [
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" },
-    { title: "Romanian Prosumer Regulations — SolarOps" },
+    { title: "Romanian Prosumer Regulations — GridPulse" },
     { name: "description", content: "Compensare cantitativă vs regularizare financiară explained, with a rules calculator." },
-    { property: "og:title", content: "Romanian Prosumer Regulations — SolarOps" },
+    { property: "og:title", content: "Romanian Prosumer Regulations — GridPulse" },
     { property: "og:description", content: "Prosumer compensation rules in Romania with a calculator." },
   ]}),
   component: Regs,

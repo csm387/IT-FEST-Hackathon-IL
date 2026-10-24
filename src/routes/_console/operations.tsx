@@ -10,9 +10,9 @@ export const Route = createFileRoute("/_console/operations")({
   head: () => ({ meta: [
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" },
-    { title: "O&M Center — SolarOps" },
+    { title: "O&M Center — GridPulse" },
     { name: "description", content: "Fleet-wide anomaly detection, alerts, tickets and technician assignment." },
-    { property: "og:title", content: "O&M Center — SolarOps" },
+    { property: "og:title", content: "O&M Center — GridPulse" },
     { property: "og:description", content: "Predictive maintenance and anomaly detection for solar fleets." },
   ]}),
   component: Ops,

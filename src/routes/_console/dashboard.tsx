@@ -14,9 +14,9 @@ export const Route = createFileRoute("/_console/dashboard")({
   head: () => ({ meta: [
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" },
-    { title: "Dashboard — SolarOps" },
+    { title: "Dashboard — GridPulse" },
     { name: "description", content: "Live solar production, consumption, battery and grid exchange with savings in RON." },
-    { property: "og:title", content: "Dashboard — SolarOps" },
+    { property: "og:title", content: "Dashboard — GridPulse" },
     { property: "og:description", content: "Live solar production, consumption, battery and grid exchange." },
   ]}),
   component: Dashboard,

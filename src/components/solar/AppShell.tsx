@@ -1,10 +1,12 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import type { ReactNode } from "react";
-import { Bell, LayoutDashboard, Map, Building2, Zap, BatteryCharging, CloudSun, Wallet, Scale, Lightbulb, Wrench, Search, Sun, CalendarClock } from "lucide-react";
+import { Bell, LayoutDashboard, Map, Building2, Zap, BatteryCharging, CloudSun, Wallet, Scale, Lightbulb, Wrench, Search, CalendarClock } from "lucide-react";
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useNotifications } from "./notifications";
 import { cn } from "@/lib/utils";
+import gridpulseLogo from "@/assets/gridpulse-logo.png.asset.json";
+import gridpulseMark from "@/assets/gridpulse-mark.png.asset.json";
 
 const groups = [
   { label: "Prosumer", items: [
@@ -27,9 +29,10 @@ const groups = [
 
 export function Logo({ compact }: { compact?: boolean }) {
   return (
-    <span className="flex items-center gap-2">
-      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-primary"><Sun className="h-4 w-4 text-primary-foreground" /></span>
-      {!compact && <span className="font-display text-lg font-semibold tracking-tight">Solar<span className="text-solar">Ops</span></span>}
+    <span className="flex items-center">
+      {compact
+        ? <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-white"><img src={gridpulseMark.url} alt="GridPulse" className="h-6 w-auto" /></span>
+        : <span className="flex h-9 items-center rounded-lg bg-white px-2.5"><img src={gridpulseLogo.url} alt="GridPulse" className="h-6 w-auto" /></span>}
     </span>
   );
 }

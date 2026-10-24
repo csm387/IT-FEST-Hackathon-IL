@@ -12,9 +12,9 @@ export const Route = createFileRoute("/_console/battery")({
   head: () => ({ meta: [
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" },
-    { title: "Battery Intelligence — SolarOps" },
+    { title: "Battery Intelligence — GridPulse" },
     { name: "description", content: "Battery state of charge, charging power and time-to-full estimates." },
-    { property: "og:title", content: "Battery Intelligence — SolarOps" },
+    { property: "og:title", content: "Battery Intelligence — GridPulse" },
     { property: "og:description", content: "Battery state of charge and charging estimates." },
   ]}),
   component: BatteryPage,

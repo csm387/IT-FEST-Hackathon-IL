@@ -9,9 +9,9 @@ const OG = "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1200&
 
 export const Route = createFileRoute("/")({
   head: () => ({ meta: [
-    { title: "SolarOps — Your Energy. One Intelligent View." },
+    { title: "GridPulse — Your Energy. One Intelligent View." },
     { name: "description", content: "Monitor solar production, battery storage, consumption and system health in real time. Built for Romanian prosumers and O&M teams." },
-    { property: "og:title", content: "SolarOps — Your Energy. One Intelligent View." },
+    { property: "og:title", content: "GridPulse — Your Energy. One Intelligent View." },
     { property: "og:description", content: "Smart solar monitoring, optimization and predictive maintenance." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary_large_image" },
@@ -75,7 +75,7 @@ function Landing() {
           The operating system for <span className="text-solar">solar energy.</span>
         </h1>
         <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
-          SolarOps brings production, batteries, savings and maintenance into one clear view — built for Romanian prosumers and the teams that keep their panels running.
+          GridPulse brings production, batteries, savings and maintenance into one clear view — built for Romanian prosumers and the teams that keep their panels running.
         </p>
         <div className="mt-9 flex flex-wrap justify-center gap-3">
           <Link to="/dashboard" className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 font-semibold text-primary-foreground">Try the live demo <ArrowRight className="h-4 w-4" /></Link>

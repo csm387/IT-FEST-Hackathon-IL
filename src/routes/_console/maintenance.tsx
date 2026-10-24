@@ -10,9 +10,9 @@ import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_console/maintenance")({
   head: () => ({ meta: [
-    { title: "Updates & maintenance — SolarOps" },
+    { title: "Updates & maintenance — GridPulse" },
     { name: "description", content: "Equipment manufacturers, software update status and service dates with a default 24-month maintenance interval." },
-    { property: "og:title", content: "Updates & maintenance — SolarOps" },
+    { property: "og:title", content: "Updates & maintenance — GridPulse" },
     { property: "og:description", content: "Review inverter software information and upcoming solar installation maintenance." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" },
