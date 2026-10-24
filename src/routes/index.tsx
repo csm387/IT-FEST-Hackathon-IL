@@ -9,9 +9,9 @@ const OG = "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1200&
 
 export const Route = createFileRoute("/")({
   head: () => ({ meta: [
-    { title: "SolarOps — Your Energy. One Intelligent View." },
+    { title: "GridPulse — Your Energy. One Intelligent View." },
     { name: "description", content: "Monitor solar production, battery storage, consumption and system health in real time. Built for Romanian prosumers and O&M teams." },
-    { property: "og:title", content: "SolarOps — Your Energy. One Intelligent View." },
+    { property: "og:title", content: "GridPulse — Your Energy. One Intelligent View." },
     { property: "og:description", content: "Smart solar monitoring, optimization and predictive maintenance." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary_large_image" },
@@ -75,7 +75,7 @@ function Landing() {
           The operating system for <span className="text-solar">solar energy.</span>
         </h1>
         <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
-          SolarOps brings production, batteries, savings and maintenance into one clear view — built for Romanian prosumers and the teams that keep their panels running.
+          GridPulse brings production, batteries, savings and maintenance into one clear view — built for Romanian prosumers and the teams that keep their panels running.
         </p>
         <div className="mt-9 flex flex-wrap justify-center gap-3">
           <Link to="/dashboard" className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 font-semibold text-primary-foreground">Try the live demo <ArrowRight className="h-4 w-4" /></Link>
@@ -87,7 +87,7 @@ function Landing() {
         <div id="product" className="mx-auto mt-16 max-w-5xl rounded-2xl border border-border bg-card p-2 text-left">
           <div className="flex items-center gap-1.5 border-b border-border px-3 pb-2 pt-1">
             <span className="h-2.5 w-2.5 rounded-full bg-muted" /><span className="h-2.5 w-2.5 rounded-full bg-muted" /><span className="h-2.5 w-2.5 rounded-full bg-muted" />
-            <span className="ml-3 text-xs text-muted-foreground">app.solarops.ro / dashboard</span>
+            <span className="ml-3 text-xs text-muted-foreground">app.gridpulse.ro / dashboard</span>
           </div>
           <div className="grid gap-3 p-3 md:grid-cols-[1fr_220px]">
             <div className="rounded-xl border border-border bg-background p-4">
@@ -228,7 +228,7 @@ function Landing() {
           <div><Logo /><p className="mt-3 text-sm text-muted-foreground">Every Watt Matters.</p></div>
           <div className="text-sm"><p className="font-semibold">Product</p><div className="mt-3 flex flex-col gap-2 text-muted-foreground"><Link to="/dashboard">Dashboard</Link><Link to="/map">Fleet map</Link><Link to="/operations">O&M center</Link></div></div>
           <div className="text-sm"><p className="font-semibold">Resources</p><div className="mt-3 flex flex-col gap-2 text-muted-foreground"><Link to="/regulations">Regulations</Link><Link to="/forecast">Forecast</Link><a href="https://unsplash.com" target="_blank" rel="noreferrer">Photos: Unsplash</a></div></div>
-          <div className="text-sm"><p className="font-semibold">Contact</p><div className="mt-3 flex flex-col gap-2 text-muted-foreground"><span className="flex items-center gap-2"><Mail className="h-4 w-4" />hello@solarops.ro</span><span className="flex items-center gap-2"><Gauge className="h-4 w-4" />Cluj-Napoca, România</span></div></div>
+          <div className="text-sm"><p className="font-semibold">Contact</p><div className="mt-3 flex flex-col gap-2 text-muted-foreground"><span className="flex items-center gap-2"><Mail className="h-4 w-4" />hello@gridpulse.ro</span><span className="flex items-center gap-2"><Gauge className="h-4 w-4" />Cluj-Napoca, România</span></div></div>
         </div>
       </footer>
     </div>

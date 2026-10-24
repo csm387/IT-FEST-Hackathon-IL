@@ -9,9 +9,9 @@ export const Route = createFileRoute("/_console/sites/")({
   head: () => ({ meta: [
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" },
-    { title: "Installations — SolarOps" },
+    { title: "Installations — GridPulse" },
     { name: "description", content: "All solar installations with health scores and comparison tools." },
-    { property: "og:title", content: "Installations — SolarOps" },
+    { property: "og:title", content: "Installations — GridPulse" },
     { property: "og:description", content: "All solar installations with health scores." },
   ]}),
   component: SitesPage,

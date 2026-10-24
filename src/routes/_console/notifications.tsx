@@ -10,9 +10,9 @@ export const Route = createFileRoute("/_console/notifications")({
   head: () => ({ meta: [
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" },
-    { title: "Notification Center — SolarOps" },
+    { title: "Notification Center — GridPulse" },
     { name: "description", content: "Solar surplus alerts, battery and fault notifications with quiet hours." },
-    { property: "og:title", content: "Notification Center — SolarOps" },
+    { property: "og:title", content: "Notification Center — GridPulse" },
     { property: "og:description", content: "Smart solar energy notifications." },
   ]}),
   component: NotesPage,

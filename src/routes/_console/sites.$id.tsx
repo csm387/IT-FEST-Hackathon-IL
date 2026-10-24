@@ -10,9 +10,9 @@ export const Route = createFileRoute("/_console/sites/$id")({
   head: ({ loaderData }) => ({ meta: [
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary_large_image" },
-    { title: loaderData ? `${loaderData.name} — SolarOps` : "Installation — SolarOps" },
+    { title: loaderData ? `${loaderData.name} — GridPulse` : "Installation — GridPulse" },
     { name: "description", content: loaderData ? `Performance, alerts and finances for ${loaderData.name} in ${loaderData.city}.` : "Installation details." },
-    { property: "og:title", content: loaderData ? `${loaderData.name} — SolarOps` : "Installation — SolarOps" },
+    { property: "og:title", content: loaderData ? `${loaderData.name} — GridPulse` : "Installation — GridPulse" },
     { property: "og:description", content: "Solar installation performance and maintenance." },
     ...(loaderData ? [{ property: "og:image", content: loaderData.image }, { name: "twitter:image", content: loaderData.image }] : []),
   ]}),

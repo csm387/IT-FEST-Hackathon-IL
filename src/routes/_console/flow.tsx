@@ -11,9 +11,9 @@ export const Route = createFileRoute("/_console/flow")({
   head: () => ({ meta: [
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" },
-    { title: "Live Energy Flow — SolarOps" },
+    { title: "Live Energy Flow — GridPulse" },
     { name: "description", content: "Animated energy flow between solar panels, home, battery and grid." },
-    { property: "og:title", content: "Live Energy Flow — SolarOps" },
+    { property: "og:title", content: "Live Energy Flow — GridPulse" },
     { property: "og:description", content: "Animated energy flow between solar, home, battery and grid." },
   ]}),
   component: FlowPage,

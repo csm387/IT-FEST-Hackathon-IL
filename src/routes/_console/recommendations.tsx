@@ -11,9 +11,9 @@ export const Route = createFileRoute("/_console/recommendations")({
   head: () => ({ meta: [
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" },
-    { title: "Smart Recommendations — SolarOps" },
+    { title: "Smart Recommendations — GridPulse" },
     { name: "description", content: "When to run appliances to use the most solar energy and pay the least." },
-    { property: "og:title", content: "Smart Recommendations — SolarOps" },
+    { property: "og:title", content: "Smart Recommendations — GridPulse" },
     { property: "og:description", content: "When to run appliances to maximise solar self-consumption." },
   ]}),
   component: Recs,

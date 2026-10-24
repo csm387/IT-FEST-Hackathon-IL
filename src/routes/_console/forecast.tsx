@@ -13,9 +13,9 @@ export const Route = createFileRoute("/_console/forecast")({
   head: () => ({ meta: [
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" },
-    { title: "Weather & Solar Forecast — SolarOps" },
+    { title: "Weather & Solar Forecast — GridPulse" },
     { name: "description", content: "Live Open-Meteo weather, irradiance and 48h solar production forecast per installation." },
-    { property: "og:title", content: "Weather & Solar Forecast — SolarOps" },
+    { property: "og:title", content: "Weather & Solar Forecast — GridPulse" },
     { property: "og:description", content: "Live weather and 48h solar forecast per installation." },
   ]}),
   component: ForecastPage,

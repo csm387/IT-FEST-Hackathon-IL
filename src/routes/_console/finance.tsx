@@ -11,9 +11,9 @@ export const Route = createFileRoute("/_console/finance")({
   head: () => ({ meta: [
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" },
-    { title: "Financial Tracking — SolarOps" },
+    { title: "Financial Tracking — GridPulse" },
     { name: "description", content: "Cost, savings, export revenue, ROI and payback per installation in RON." },
-    { property: "og:title", content: "Financial Tracking — SolarOps" },
+    { property: "og:title", content: "Financial Tracking — GridPulse" },
     { property: "og:description", content: "Cost, savings, ROI and payback per solar installation." },
   ]}),
   component: Finance,
