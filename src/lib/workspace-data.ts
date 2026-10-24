@@ -1,14 +1,13 @@
-import { createServerFn } from '@tanstack/react-start';
-import { requireSupabaseAuth } from '@/integrations/supabase/auth-middleware';
+import { supabase } from '@/integrations/supabase/client';
 import { nextMaintenanceDate } from './maintenance';
 import type { StoredSite, Workspace } from './workspace';
 import type { Crew, Job } from './dispatch';
 import type { Alert } from './fleet';
 import type { Claim, Policy } from './insurance';
 
-export const loadWorkspace = createServerFn({ method: 'GET' })
-  .middleware([requireSupabaseAuth])
-  .handler(async ({ context }): Promise<Workspace> => {
+/** Reads the signed-in user's workspace; row access is enforced by database policies. */
+export async function loadWorkspace(): Promise<Workspace> {
+    const context = { supabase };
     const [sites, crews, jobs, alerts, policies, claims] = await Promise.all([
       context.supabase.from('sites').select('*').order('template_key'),
       context.supabase.from('crews').select('*').order('template_key'),
@@ -41,4 +40,4 @@ export const loadWorkspace = createServerFn({ method: 'GET' })
         return site ? [{ site, panelManufacturer: row.panel_manufacturer, last: row.last_maintenance, next: nextMaintenanceDate(row.last_maintenance ?? site.installDate, row.maintenance_months), basis: row.last_maintenance ? 'maintenance' as const : 'installation' as const }] : [];
       }),
     };
-  });
+  }
