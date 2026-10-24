@@ -174,6 +174,7 @@ export type Database = {
           created_at: string
           created_by: string
           deductible: number
+          documents: Json
           end_date: string
           id: string
           insurance_type: string
@@ -191,6 +192,7 @@ export type Database = {
           created_at?: string
           created_by: string
           deductible?: number
+          documents?: Json
           end_date: string
           id?: string
           insurance_type?: string
@@ -208,6 +210,7 @@ export type Database = {
           created_at?: string
           created_by?: string
           deductible?: number
+          documents?: Json
           end_date?: string
           id?: string
           insurance_type?: string

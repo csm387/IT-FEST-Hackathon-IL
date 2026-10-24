@@ -1,0 +1,1 @@
+ALTER TABLE public.insurance_policies ADD COLUMN documents jsonb NOT NULL DEFAULT '[]'::jsonb;

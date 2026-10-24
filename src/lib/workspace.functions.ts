@@ -4,6 +4,7 @@ import { nextMaintenanceDate } from './maintenance';
 import type { StoredSite, Workspace } from './workspace';
 import type { Crew, Job } from './dispatch';
 import type { Alert } from './fleet';
+import type { Claim, Policy } from './insurance';
 
 export const loadWorkspace = createServerFn({ method: 'GET' })
   .middleware([requireSupabaseAuth])
