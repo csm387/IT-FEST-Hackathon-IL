@@ -7,8 +7,21 @@ import { workspaceHome, type Workspace } from '@/lib/workspace';
 import type { Account } from '@/lib/account';
 import type { Job } from '@/lib/dispatch';
 import type { Alert } from '@/lib/fleet';
+import { isSessionError, withSessionRecovery } from '@/lib/session-recovery';
 
-export const workspaceQuery = (userId: string) => queryOptions({ queryKey: ['workspace', userId], queryFn: () => loadWorkspace(), staleTime: 30_000 });
+export const workspaceQuery = (userId: string) => queryOptions({
+  queryKey: ['workspace', userId],
+  queryFn: () => withSessionRecovery(
+    () => loadWorkspace(),
+    async () => {
+      const { data, error } = await supabase.auth.refreshSession();
+      return !error && Boolean(data.session);
+    },
+    async () => { await supabase.auth.signOut({ scope: 'local' }); },
+  ),
+  retry: (count, error) => !isSessionError(error) && count < 2,
+  staleTime: 30_000,
+});
 interface WorkspaceContext extends Workspace {
   home: Workspace['sites'][number];
   saveJob: (id: string, job: Job) => Promise<void>;

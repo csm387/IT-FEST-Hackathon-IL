@@ -1,4 +1,6 @@
 # Tasks
+- [x] Add one-refresh invalid-token recovery on page opening; eight targeted tests pass and build is OK.
+- [ ] Verify session recovery in the signed-in browser — blocked: no active preview session; self-session minting found no matching account, so the user must sign in.
 - [x] Store simulated installations, readings, service records, crews, jobs and alerts in Cloud with account-scoped access.
 - [x] Connect all console pages to saved data and persist dispatch, O&M, notifications and settings.
 - [x] Seed 42-installation simulation catalog, 60-day readings, four crews and 15 jobs/alerts; provision the existing individual account.
