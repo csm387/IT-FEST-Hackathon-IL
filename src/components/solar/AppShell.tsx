@@ -1,6 +1,6 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import type { ReactNode } from "react";
-import { Bell, LayoutDashboard, Map, Building2, Zap, BatteryCharging, CloudSun, Wallet, Scale, Lightbulb, Wrench, Search, Sun } from "lucide-react";
+import { Bell, LayoutDashboard, Map, Building2, Zap, BatteryCharging, CloudSun, Wallet, Scale, Lightbulb, Wrench, Search, Sun, CalendarClock } from "lucide-react";
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useNotifications } from "./notifications";
@@ -20,6 +20,7 @@ const groups = [
     { title: "Fleet map", url: "/map", icon: Map },
     { title: "Installations", url: "/sites", icon: Building2 },
     { title: "O&M center", url: "/operations", icon: Wrench },
+    { title: "Updates & maintenance", url: "/maintenance", icon: CalendarClock },
     { title: "Notifications", url: "/notifications", icon: Bell },
   ]},
 ] as const;
