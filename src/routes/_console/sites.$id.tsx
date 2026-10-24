@@ -27,12 +27,15 @@ export const Route = createFileRoute("/_console/sites/$id")({
 
 function SiteDetail() {
   const { id } = Route.useParams();
-  const { sites, alerts: savedAlerts } = useWorkspace();
+  const { sites, alerts: savedAlerts, policies } = useWorkspace();
   const s = sites.find(site => site.id === id);
   if (!s) throw notFound();
   const history = s.serviceHistory;
   const day = siteDay(s);
   const t = sumDay(day);
+  const today = new Date().toISOString().slice(0, 10);
+  const policy = currentPolicy(policies, s.id);
+  const insuranceStatus = policyStatus(policy, today);
   const alerts = savedAlerts.filter((a) => a.siteId === s.id);
   const lostKWh = Math.max(0, t.expected - t.solar);
   return (
@@ -42,9 +45,13 @@ function SiteDetail() {
         <img src={s.image} alt={`${s.name} installation`} className="h-64 w-full object-cover sm:h-80" />
         <div className="absolute inset-0 bg-hero-fade" />
         <div className="absolute bottom-0 left-0 right-0 p-6">
-          <StatusBadge status={s.status} />
+          <div className="flex flex-wrap items-center gap-2">
+            <StatusBadge status={s.status} />
+            <Link to="/insurance" className="inline-flex" title="Open insurance details"><InsuranceBadge status={insuranceStatus} className="border border-border bg-background/60" /></Link>
+          </div>
           <h1 className="mt-2 text-3xl font-semibold">{s.name}</h1>
           <p className="mt-1 flex items-center gap-1 text-sm text-muted-foreground"><MapPin className="h-4 w-4" />{s.city}, {s.region} · {s.lat.toFixed(4)}, {s.lng.toFixed(4)}</p>
+          {policy && <p className="mt-1 text-xs text-muted-foreground">{policy.provider} · {policy.policyNumber} · {daysRemaining(policy.endDate, today) < 0 ? "expired" : `${daysRemaining(policy.endDate, today)} days remaining`}</p>}
         </div>
       </div>
       <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4">
