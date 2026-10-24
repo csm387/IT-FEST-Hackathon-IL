@@ -59,8 +59,8 @@ function Landing() {
             <a href="#faq" className="hover:text-foreground">FAQ</a>
           </div>
           <div className="flex items-center gap-2">
-            <Link to="/dashboard" className="hidden rounded-lg px-3 py-2 text-sm text-muted-foreground hover:text-foreground sm:block">Sign in</Link>
-            <Link to="/dashboard" className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground">Get started</Link>
+            <Link to="/auth" className="hidden rounded-lg px-3 py-2 text-sm text-muted-foreground hover:text-foreground sm:block">Sign in</Link>
+            <Link to="/auth" className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground">Get started</Link>
           </div>
         </div>
       </nav>

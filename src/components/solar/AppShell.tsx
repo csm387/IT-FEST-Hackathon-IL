@@ -1,7 +1,10 @@
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link, useRouterState, getRouteApi } from "@tanstack/react-router";
+import { supabase } from "@/integrations/supabase/client";
+import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState, type ReactNode } from "react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useNavigate } from "@tanstack/react-router";
-import { Bell, LayoutDashboard, Map, Building2, Zap, BatteryCharging, CloudSun, Wallet, Scale, Lightbulb, Wrench, Search, CalendarClock } from "lucide-react";
+import { Bell, LayoutDashboard, Map, Building2, Zap, BatteryCharging, CloudSun, Wallet, Scale, Lightbulb, Wrench, Search, CalendarClock, Users } from "lucide-react";
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useNotifications } from "./notifications";
@@ -24,6 +27,7 @@ const SPACES = {
   business: { label: "Business", home: "/business", items: [
     { title: "Fleet dashboard", url: "/business", icon: LayoutDashboard },
     { title: "Dispatch", url: "/business/dispatch", icon: Map },
+    { title: "Clients", url: "/business/clients", icon: Users },
     { title: "Installations", url: "/sites", icon: Building2 },
     { title: "O&M center", url: "/operations", icon: Wrench },
     { title: "Updates & maintenance", url: "/maintenance", icon: CalendarClock },
@@ -32,17 +36,17 @@ const SPACES = {
   ]},
 } as const;
 type Space = keyof typeof SPACES;
-const BUSINESS_ONLY = ["/business", "/sites", "/operations"];
+const consoleRoute = getRouteApi("/_console");
 const INDIVIDUAL_ONLY = ["/dashboard", "/flow", "/battery", "/forecast", "/recommendations", "/regulations"];
 
-function useSpace(path: string): [Space, (s: Space) => void] {
-  const [space, setSpace] = useState<Space>("individual");
-  useEffect(() => { const v = localStorage.getItem("gp-space"); if (v === "business" || v === "individual") setSpace(v); }, []);
+function useSpace(path: string, isBusiness: boolean): [Space, (s: Space) => void] {
+  const [space, setSpace] = useState<Space>(isBusiness ? "business" : "individual");
   useEffect(() => {
-    const s: Space | null = BUSINESS_ONLY.some((p) => path.startsWith(p)) ? "business" : INDIVIDUAL_ONLY.some((p) => path.startsWith(p)) ? "individual" : null;
-    if (s) { setSpace(s); localStorage.setItem("gp-space", s); }
-  }, [path]);
-  return [space, (s) => { setSpace(s); localStorage.setItem("gp-space", s); }];
+    if (!isBusiness) return setSpace("individual");
+    if (path.startsWith("/business") || path.startsWith("/sites") || path.startsWith("/operations")) setSpace("business");
+    else if (INDIVIDUAL_ONLY.some((p) => path.startsWith(p))) setSpace("individual");
+  }, [path, isBusiness]);
+  return [space, setSpace];
 }
 
 export function Logo({ compact }: { compact?: boolean }) {
@@ -109,7 +113,12 @@ function Bellmenu() {
 
 export function AppShell({ children }: { children: ReactNode }) {
   const path = useRouterState({ select: (r) => r.location.pathname });
-  const [space, setSpace] = useSpace(path);
+  const { account } = consoleRoute.useRouteContext();
+  const isBusiness = account.role === "business";
+  const [space, setSpace] = useSpace(path, isBusiness);
+  const qc = useQueryClient();
+  const signOut = async () => { await qc.cancelQueries(); qc.clear(); await supabase.auth.signOut(); navigate({ to: "/auth", replace: true }); };
+  const initials = (account.fullName || account.email).split(/\s+/).map((w) => w[0]).join("").slice(0, 2).toUpperCase();
   const navigate = useNavigate();
   const switchTo = (s: Space) => { setSpace(s); navigate({ to: SPACES[s].home }); };
   return (
@@ -124,17 +133,25 @@ export function AppShell({ children }: { children: ReactNode }) {
               <input placeholder="Search sites, alerts, inverters…" className="h-9 w-full rounded-xl border border-border bg-background/40 pl-9 pr-3 text-sm outline-none focus:border-primary/50" />
             </div>
             <div className="ml-auto flex items-center gap-3">
-              <div className="flex rounded-xl border border-border p-0.5 text-xs">
+              {isBusiness && <div className="flex rounded-xl border border-border p-0.5 text-xs">
                 {(["individual", "business"] as Space[]).map((s) => (
                   <button key={s} onClick={() => switchTo(s)} className={cn("rounded-lg px-3 py-1.5 font-medium", space === s ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground")}>{s === "individual" ? "Individual" : "Business"}</button>
                 ))}
-              </div>
+              </div>}
               <span className="hidden items-center gap-2 rounded-full border border-border px-3 py-1 text-xs text-muted-foreground sm:flex">
                 <span className="relative h-2 w-2"><span className="pulse-ring absolute inset-0 rounded-full bg-solar" /><span className="absolute inset-0 rounded-full bg-solar" /></span>
                 Live · simulated data
               </span>
               <Bellmenu />
-              <span className="grid h-9 w-9 place-items-center rounded-full bg-secondary text-xs font-bold text-foreground">AP</span>
+              <DropdownMenu>
+                <DropdownMenuTrigger className="grid h-9 w-9 place-items-center rounded-full bg-secondary text-xs font-bold text-foreground" aria-label="Account menu">{initials}</DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="z-[600] w-56">
+                  <DropdownMenuLabel className="font-normal"><div className="text-sm font-medium">{account.fullName || account.email}</div><div className="text-xs text-muted-foreground">{isBusiness ? account.companyName ?? "Business" : "Individual"} account</div></DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild><Link to="/account">Account</Link></DropdownMenuItem>
+                  <DropdownMenuItem onClick={signOut}>Sign out</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </header>
           <main className="flex-1 p-4 sm:p-6 lg:p-8">{children}</main>

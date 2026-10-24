@@ -9,7 +9,7 @@
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
 
-- App pages live under the `_console` pathless layout (sidebar shell + notifications provider); the shell shows either the Individual or Business menu (`SPACES` in AppShell), business-only pages live under `/business`. The landing page `/` stays outside it. Why: one shared shell, two audiences.
+- App pages live under the `_console` pathless layout (client-only auth gate in its beforeLoad, loads the account into route context; sidebar shell shows the Individual or Business menu from `SPACES`). Account type is stored in `user_roles` (set once at signup/onboarding), access rules in `src/lib/account.ts`; business-only pages live under `/business`, `/sites`, `/operations`. Individuals link to a company via its invite code (`link_company` RPC). Why: one shell, two audiences, permissions enforced in the database.
 - Dispatch rules (job status flow, crew assignment, nearest crew) are pure functions in `src/lib/dispatch.ts` with tests in `src/test/dispatch.test.ts`. Why: same separation of rules from simulated data.
 - Business rules (energy balance, battery, compensation, finance, anomalies) are pure functions in `src/lib/energy.ts` with tests in `src/test/energy.test.ts`; simulated fleet data lives in `src/lib/fleet.ts`. Why: swap simulation for real data later without touching rules.
 - Maintenance scheduling and explicitly simulated service records live in `src/lib/maintenance.ts`, with separate rule tests; unconnected manufacturer software status remains unverified rather than inferred. Why: service dates and firmware availability must not be presented as real telemetry.
