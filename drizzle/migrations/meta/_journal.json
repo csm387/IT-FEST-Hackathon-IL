@@ -71,6 +71,13 @@
       "when": 1792856921493,
       "tag": "0009_energy_reconciliation",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1792856942337,
+      "tag": "0010_energy_bills_storage_policies",
+      "breakpoints": true
     }
   ]
 }

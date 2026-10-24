@@ -1,0 +1,3 @@
+CREATE POLICY "Read bill files on visible sites" ON storage.objects FOR SELECT TO authenticated USING (bucket_id = 'energy-bills' AND public.can_read_site(((storage.foldername(name))[1])::uuid));
+CREATE POLICY "Upload bill files on visible sites" ON storage.objects FOR INSERT TO authenticated WITH CHECK (bucket_id = 'energy-bills' AND public.can_read_site(((storage.foldername(name))[1])::uuid));
+CREATE POLICY "Delete bill files on visible sites" ON storage.objects FOR DELETE TO authenticated USING (bucket_id = 'energy-bills' AND public.can_read_site(((storage.foldername(name))[1])::uuid));
