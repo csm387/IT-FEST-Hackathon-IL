@@ -14,16 +14,97 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          company_id: string | null
+          company_name: string | null
+          created_at: string
+          full_name: string
+          id: string
+          invite_code: string | null
+          updated_at: string
+        }
+        Insert: {
+          company_id?: string | null
+          company_name?: string | null
+          created_at?: string
+          full_name?: string
+          id: string
+          invite_code?: string | null
+          updated_at?: string
+        }
+        Update: {
+          company_id?: string | null
+          company_name?: string | null
+          created_at?: string
+          full_name?: string
+          id?: string
+          invite_code?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profiles_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["account_type"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["account_type"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["account_type"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      apply_account_type: {
+        Args: {
+          _company: string
+          _type: Database["public"]["Enums"]["account_type"]
+          _user: string
+        }
+        Returns: undefined
+      }
+      choose_account_type: {
+        Args: {
+          _company?: string
+          _type: Database["public"]["Enums"]["account_type"]
+        }
+        Returns: undefined
+      }
+      gen_invite_code: { Args: never; Returns: string }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["account_type"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      link_company: { Args: { _code: string }; Returns: string }
     }
     Enums: {
-      [_ in never]: never
+      account_type: "individual" | "business"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +231,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      account_type: ["individual", "business"],
+    },
   },
 } as const
