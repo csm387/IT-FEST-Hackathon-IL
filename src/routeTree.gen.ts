@@ -15,6 +15,7 @@ import { Route as ConsoleBatteryRouteImport } from './routes/_console/battery'
 import { Route as ConsoleDashboardRouteImport } from './routes/_console/dashboard'
 import { Route as ConsoleFlowRouteImport } from './routes/_console/flow'
 import { Route as ConsoleForecastRouteImport } from './routes/_console/forecast'
+import { Route as ConsoleMapRouteImport } from './routes/_console/map'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -45,6 +46,11 @@ const ConsoleForecastRoute = ConsoleForecastRouteImport.update({
   path: '/forecast',
   getParentRoute: () => ConsoleRoute,
 } as any)
+const ConsoleMapRoute = ConsoleMapRouteImport.update({
+  id: '/map',
+  path: '/map',
+  getParentRoute: () => ConsoleRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof ConsoleDashboardRoute
   '/flow': typeof ConsoleFlowRoute
   '/forecast': typeof ConsoleForecastRoute
+  '/map': typeof ConsoleMapRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -59,6 +66,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof ConsoleDashboardRoute
   '/flow': typeof ConsoleFlowRoute
   '/forecast': typeof ConsoleForecastRoute
+  '/map': typeof ConsoleMapRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -68,12 +76,13 @@ export interface FileRoutesById {
   '/_console/dashboard': typeof ConsoleDashboardRoute
   '/_console/flow': typeof ConsoleFlowRoute
   '/_console/forecast': typeof ConsoleForecastRoute
+  '/_console/map': typeof ConsoleMapRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/battery' | '/dashboard' | '/flow' | '/forecast'
+  fullPaths: '/' | '/battery' | '/dashboard' | '/flow' | '/forecast' | '/map'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/battery' | '/dashboard' | '/flow' | '/forecast'
+  to: '/' | '/battery' | '/dashboard' | '/flow' | '/forecast' | '/map'
   id:
     | '__root__'
     | '/'
@@ -82,6 +91,7 @@ export interface FileRouteTypes {
     | '/_console/dashboard'
     | '/_console/flow'
     | '/_console/forecast'
+    | '/_console/map'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -133,6 +143,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConsoleForecastRouteImport
       parentRoute: typeof ConsoleRoute
     }
+    '/_console/map': {
+      id: '/_console/map'
+      path: '/map'
+      fullPath: '/map'
+      preLoaderRoute: typeof ConsoleMapRouteImport
+      parentRoute: typeof ConsoleRoute
+    }
   }
 }
 
@@ -141,6 +158,7 @@ interface ConsoleRouteChildren {
   ConsoleDashboardRoute: typeof ConsoleDashboardRoute
   ConsoleFlowRoute: typeof ConsoleFlowRoute
   ConsoleForecastRoute: typeof ConsoleForecastRoute
+  ConsoleMapRoute: typeof ConsoleMapRoute
 }
 
 const ConsoleRouteChildren: ConsoleRouteChildren = {
@@ -148,6 +166,7 @@ const ConsoleRouteChildren: ConsoleRouteChildren = {
   ConsoleDashboardRoute: ConsoleDashboardRoute,
   ConsoleFlowRoute: ConsoleFlowRoute,
   ConsoleForecastRoute: ConsoleForecastRoute,
+  ConsoleMapRoute: ConsoleMapRoute,
 }
 
 const ConsoleRouteWithChildren =
