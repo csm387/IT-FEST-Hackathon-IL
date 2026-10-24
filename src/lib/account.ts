@@ -30,5 +30,7 @@ export function isBusinessPath(path: string) {
   return BUSINESS_PATHS.some((p) => path === p || path.startsWith(p + "/"));
 }
 export function canOpen(role: AccountType, path: string) {
+  // Detail records are protected by ownership RLS, while fleet lists stay business-only.
+  if (role === 'individual' && /^\/sites\/[^/]+\/?$/.test(path)) return true;
   return role === "business" || !isBusinessPath(path);
 }

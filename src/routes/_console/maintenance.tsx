@@ -1,3 +1,4 @@
+import { useWorkspace } from '@/components/solar/WorkspaceProvider';
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { CalendarClock, Wrench, Cpu, LayoutGrid, ChevronRight, ExternalLink, Search, CircleHelp, ShieldCheck } from "lucide-react";
@@ -7,6 +8,9 @@ import { PageHeader } from "@/components/solar/ui";
 import { getSites } from "@/lib/fleet";
 import { DEFAULT_MAINTENANCE_MONTHS, MAINTENANCE_DEMO_DATE, maintenanceDemo, maintenanceStatus } from "@/lib/maintenance";
 import { cn } from "@/lib/utils";
+import { supabase } from '@/integrations/supabase/client';
+import { useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 
 export const Route = createFileRoute("/_console/maintenance")({
   head: () => ({ meta: [
@@ -20,7 +24,6 @@ export const Route = createFileRoute("/_console/maintenance")({
   component: Maintenance,
 });
 
-const records = maintenanceDemo(getSites());
 const support: Record<string, string> = {
   Huawei: "https://solar.huawei.com/", SMA: "https://www.sma.de/en", Fronius: "https://www.fronius.com/en/solar-energy",
   Victron: "https://www.victronenergy.com/support-and-downloads", Growatt: "https://en.growatt.com/", SolarEdge: "https://www.solaredge.com/",
@@ -30,6 +33,19 @@ const tones = { overdue: "text-destructive bg-destructive/10", soon: "text-warni
 const date = (value: string) => new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", year: "numeric", timeZone: "UTC" }).format(new Date(`${value}T00:00:00Z`));
 
 function Maintenance() {
+  const { maintenance: records } = useWorkspace();
+  const queryClient = useQueryClient();
+  const [serviceDate, setServiceDate] = useState('');
+  const [saving, setSaving] = useState(false);
+  async function recordService(siteId: string) {
+    if (!serviceDate) return;
+    setSaving(true);
+    const { error } = await supabase.from('sites').update({ last_maintenance: serviceDate }).eq('id', siteId).select('id').single();
+    setSaving(false);
+    if (error) { toast.error(error.message); return; }
+    await queryClient.invalidateQueries({ queryKey: ['workspace'] });
+    toast.success('Maintenance date saved');
+  }
   const [view, setView] = useState<"inverter" | "panel">("inverter");
   const [query, setQuery] = useState("");
   const [manufacturer, setManufacturer] = useState("All");
@@ -66,6 +82,7 @@ function Maintenance() {
     </section>
 
     <Dialog open={selectedBrand !== null} onOpenChange={(open) => { if (!open) setSelectedBrand(null); }}><DialogContent className="z-[600] max-h-[80vh] overflow-y-auto"><DialogHeader><DialogTitle>{selectedBrand} · {view === "inverter" ? "Inverters" : "Solar panels"}</DialogTitle><DialogDescription>{brandRecords.length} installations · {view === "panel" ? "Sample manufacturer assignment" : "Manufacturer not connected"}</DialogDescription></DialogHeader><dl className="space-y-3 text-sm"><div><dt className="text-xs text-muted-foreground">Software updates</dt><dd className="mt-1">{view === "inverter" ? "Unverified — installed and latest versions are not available." : "Passive photovoltaic modules do not run firmware. Optimizers and controllers require a separate device check."}</dd></div><div><dt className="text-xs text-muted-foreground">Models in fleet</dt><dd className="mt-1">{view === "inverter" ? [...new Set(brandRecords.map((r) => r.site.inverterModel))].join(", ") : [...new Set(brandRecords.map((r) => `${r.site.panelWp} Wp`))].join(", ") + " · exact models not recorded"}</dd></div><div><dt className="text-xs text-muted-foreground">Maintenance scope</dt><dd className="mt-1">{view === "inverter" ? "Electrical connections, cooling, fault log, protections and manufacturer-approved firmware review." : "Visual inspection, mounting, connectors, cleaning needs and string performance."}</dd></div></dl>{view === "inverter" && selectedBrand && support[selectedBrand] && <Button variant="outline" asChild><a href={support[selectedBrand]} target="_blank" rel="noopener noreferrer">Manufacturer website<ExternalLink /></a></Button>}</DialogContent></Dialog>
-    <Dialog open={Boolean(record)} onOpenChange={(open) => { if (!open) setSelectedSite(null); }}><DialogContent className="z-[600] max-h-[80vh] overflow-y-auto"><DialogHeader><DialogTitle>{record?.site.name}</DialogTitle><DialogDescription>Sample service record · not a confirmed appointment</DialogDescription></DialogHeader>{record && <><div className="border-l-2 border-battery pl-4"><p className="text-xs text-muted-foreground">{record.last ? "Last maintenance" : "Installation · no service history"}</p><p className="mt-1 font-semibold">{date(record.last ?? record.site.installDate)}</p><div className="my-4 flex items-center gap-2 text-xs text-muted-foreground"><CalendarClock className="h-4 w-4" />+ {DEFAULT_MAINTENANCE_MONTHS} months</div><p className="text-xs text-muted-foreground">Next maintenance due</p><p className="mt-1 font-semibold text-battery">{date(record.next)}</p></div><dl className="space-y-3 text-sm"><div><dt className="text-xs text-muted-foreground">Inverter</dt><dd>{record.site.manufacturer} · {record.site.inverterModel}</dd></div><div><dt className="text-xs text-muted-foreground">Panels · sample manufacturer</dt><dd>{record.panelManufacturer} · {record.site.panels} × {record.site.panelWp} Wp</dd></div><div><dt className="text-xs text-muted-foreground">Software update requirement</dt><dd>Unverified · no version data from manufacturer</dd></div><div><dt className="text-xs text-muted-foreground">Next service</dt><dd>Panel and mounting inspection, electrical checks, inverter fault review and battery checks where applicable.</dd></div></dl><Button variant="outline" asChild><Link to="/sites/$id" params={{ id: record.site.id }}>Open installation<ChevronRight /></Link></Button></>}</DialogContent></Dialog>
+    <Dialog open={Boolean(record)} onOpenChange={(open) => { if (!open) setSelectedSite(null); }}><DialogContent className="z-[600] max-h-[80vh] overflow-y-auto"><DialogHeader><DialogTitle>{record?.site.name}</DialogTitle><DialogDescription>Sample service record · not a confirmed appointment</DialogDescription></DialogHeader>{record && <><div className="border-l-2 border-battery pl-4"><p className="text-xs text-muted-foreground">{record.last ? "Last maintenance" : "Installation · no service history"}</p><p className="mt-1 font-semibold">{date(record.last ?? record.site.installDate)}</p><div className="my-4 flex items-center gap-2 text-xs text-muted-foreground"><CalendarClock className="h-4 w-4" />+ {DEFAULT_MAINTENANCE_MONTHS} months</div><p className="text-xs text-muted-foreground">Next maintenance due</p><p className="mt-1 font-semibold text-battery">{date(record.next)}</p></div><dl className="space-y-3 text-sm"><div><dt className="text-xs text-muted-foreground">Inverter</dt><dd>{record.site.manufacturer} · {record.site.inverterModel}</dd></div><div><dt className="text-xs text-muted-foreground">Panels · sample manufacturer</dt><dd>{record.panelManufacturer} · {record.site.panels} × {record.site.panelWp} Wp</dd></div><div><dt className="text-xs text-muted-foreground">Software update requirement</dt><dd>Unverified · no version data from manufacturer</dd></div><div><dt className="text-xs text-muted-foreground">Next service</dt><dd>Panel and mounting inspection, electrical checks, inverter fault review and battery checks where applicable.</dd></div></dl>    <section className="mt-6 border-t border-border pt-5"><h2 className="text-sm font-semibold">Record maintenance · {record.site.name}</h2><div className="mt-3 flex flex-wrap gap-3"><input aria-label="Maintenance performed date" type="date" min={record.site.installDate} max={new Date().toISOString().slice(0,10)} value={serviceDate} onChange={e => setServiceDate(e.target.value)} className="h-10 rounded-md border border-border bg-card px-3 text-sm" /><Button disabled={saving || !serviceDate} onClick={() => { void recordService(record.site.id); }}>Save maintenance</Button></div></section><Button variant="outline" asChild><Link to="/sites/$id" params={{ id: record.site.id }}>Open installation<ChevronRight /></Link></Button></>}</DialogContent></Dialog>
+
   </div>;
 }

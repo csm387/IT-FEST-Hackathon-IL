@@ -1,3 +1,5 @@
+import { useSavedSetting } from '@/hooks/use-saved-setting';
+import { useWorkspace } from '@/components/solar/WorkspaceProvider';
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
@@ -21,10 +23,14 @@ export const Route = createFileRoute("/_console/finance")({
 
 
 function Finance() {
-  const [retail, setRetail] = useState(1.3);
-  const [exportP, setExportP] = useState(0.45);
-  const [maintPct, setMaintPct] = useState(1);
-  const rows = useMemo(() => getSites().map((s) => {
+  const { sites } = useWorkspace();
+  const { account } = Route.useRouteContext();
+  const [finance, setFinance] = useSavedSetting(account.userId, "finance", { retail: 1.3, exportP: 0.45, maintPct: 1 });
+  const { retail, exportP, maintPct } = finance;
+  const setRetail = (retail: number) => setFinance({ ...finance, retail });
+  const setExportP = (exportP: number) => setFinance({ ...finance, exportP });
+  const setMaintPct = (maintPct: number) => setFinance({ ...finance, maintPct });
+  const rows = useMemo(() => sites.map((s) => {
     const t = sumDay(siteDay(s));
     const yearFactor = 365 * 0.72; // seasonal average vs October day
     const selfKWh = (t.solar - t.export) * yearFactor, exportKWh = t.export * yearFactor, importKWh = t.import * yearFactor;
@@ -33,7 +39,7 @@ function Finance() {
     const annual = selfValue + exportRev;
     const lost = Math.max(0, t.expected - t.solar) * yearFactor * retail;
     return { s, selfValue, exportRev, purchase, maint, annual, net: purchase + maint - exportRev, payback: paybackYears(s.installCostRON, annual, maint), roi: roiPercent(s.installCostRON, (annual - maint) * 25), lost };
-  }).sort((a, b) => b.roi - a.roi), [retail, exportP, maintPct]);
+  }).sort((a, b) => b.roi - a.roi), [sites, retail, exportP, maintPct]);
   const tot = rows.reduce((a, r) => ({ cost: a.cost + r.s.installCostRON, self: a.self + r.selfValue, exp: a.exp + r.exportRev, pur: a.pur + r.purchase, m: a.m + r.maint, lost: a.lost + r.lost, annual: a.annual + r.annual }), { cost: 0, self: 0, exp: 0, pur: 0, m: 0, lost: 0, annual: 0 });
 
   const netAnnual = tot.annual - tot.m;

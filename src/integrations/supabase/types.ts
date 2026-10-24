@@ -14,6 +14,114 @@ export type Database = {
   }
   public: {
     Tables: {
+      account_settings: {
+        Row: {
+          data: Json
+          user_id: string
+        }
+        Insert: {
+          data?: Json
+          user_id: string
+        }
+        Update: {
+          data?: Json
+          user_id?: string
+        }
+        Relationships: []
+      }
+      crews: {
+        Row: {
+          company_id: string
+          data: Json
+          id: string
+          template_key: string
+        }
+        Insert: {
+          company_id: string
+          data: Json
+          id?: string
+          template_key: string
+        }
+        Update: {
+          company_id?: string
+          data?: Json
+          id?: string
+          template_key?: string
+        }
+        Relationships: []
+      }
+      dispatch_jobs: {
+        Row: {
+          crew_id: string | null
+          id: string
+          priority: string
+          reference: string
+          site_id: string
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          crew_id?: string | null
+          id?: string
+          priority: string
+          reference: string
+          site_id: string
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          crew_id?: string | null
+          id?: string
+          priority?: string
+          reference?: string
+          site_id?: string
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_jobs_crew_id_fkey"
+            columns: ["crew_id"]
+            isOneToOne: false
+            referencedRelation: "crews"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dispatch_jobs_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "sites"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notifications: {
+        Row: {
+          created_at: string
+          data: Json
+          id: string
+          read: boolean
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          data: Json
+          id?: string
+          read?: boolean
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json
+          id?: string
+          read?: boolean
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           company_id: string | null
@@ -52,6 +160,89 @@ export type Database = {
           },
         ]
       }
+      simulation_templates: {
+        Row: {
+          data: Json
+          id: string
+        }
+        Insert: {
+          data: Json
+          id: string
+        }
+        Update: {
+          data?: Json
+          id?: string
+        }
+        Relationships: []
+      }
+      site_alerts: {
+        Row: {
+          data: Json
+          id: string
+          reference: string
+          site_id: string
+          status: string
+          technician: string
+        }
+        Insert: {
+          data: Json
+          id?: string
+          reference: string
+          site_id: string
+          status?: string
+          technician?: string
+        }
+        Update: {
+          data?: Json
+          id?: string
+          reference?: string
+          site_id?: string
+          status?: string
+          technician?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "site_alerts_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "sites"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sites: {
+        Row: {
+          created_at: string
+          data: Json
+          id: string
+          last_maintenance: string | null
+          maintenance_months: number
+          owner_id: string
+          panel_manufacturer: string
+          template_key: string
+        }
+        Insert: {
+          created_at?: string
+          data: Json
+          id?: string
+          last_maintenance?: string | null
+          maintenance_months?: number
+          owner_id: string
+          panel_manufacturer?: string
+          template_key: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json
+          id?: string
+          last_maintenance?: string | null
+          maintenance_months?: number
+          owner_id?: string
+          panel_manufacturer?: string
+          template_key?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -86,6 +277,7 @@ export type Database = {
         }
         Returns: undefined
       }
+      can_read_site: { Args: { _site: string }; Returns: boolean }
       choose_account_type: {
         Args: {
           _company?: string

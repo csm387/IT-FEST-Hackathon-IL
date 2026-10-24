@@ -1,3 +1,5 @@
+import { useSavedSetting } from '@/hooks/use-saved-setting';
+import { useWorkspace } from '@/components/solar/WorkspaceProvider';
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { WashingMachine, Flame, Heater, AirVent, Car, Plus, Sun, BatteryCharging, CloudSun, Clock } from "lucide-react";
@@ -35,9 +37,11 @@ function bestWindow(surplus: number[], hours: number) {
 }
 
 function Recs() {
-  const site = homeSite();
+  const { home: site } = useWorkspace();
   const day = useMemo(() => siteDay(site), [site]);
-  const [loads, setLoads] = useState(defaultLoads);
+  const [savedLoads, saveLoads] = useSavedSetting(Route.useRouteContext().account.userId, "loads", defaultLoads.map(({ icon, ...load }) => load));
+  const loads = savedLoads.map(load => ({ ...load, icon: defaultLoads.find(l => l.id === load.id)?.icon ?? Plus }));
+  const setLoads = (values: typeof loads) => saveLoads(values.map(({ icon, ...load }) => load));
   const surplus = day.map((p) => Math.max(0, p.solar - p.load));
   const slots = day.map((p, h) => classifyHour(surplus[h], retailAt(h), TARIFF.peakRetailRON));
   const peak = day.reduce((a, b) => (b.solar > a.solar ? b : a));

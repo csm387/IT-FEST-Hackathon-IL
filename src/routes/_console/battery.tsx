@@ -1,3 +1,4 @@
+import { useWorkspace } from '@/components/solar/WorkspaceProvider';
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
@@ -21,9 +22,11 @@ export const Route = createFileRoute("/_console/battery")({
 });
 
 function BatteryPage() {
-  const sites = getSites().filter((s) => s.batteryKWh > 0);
+  const { sites: savedSites } = useWorkspace();
+  const sites = savedSites.filter((s) => s.batteryKWh > 0);
   const [id, setId] = useState(sites[0].id);
-  const site = sites.find((s) => s.id === id)!;
+  const site = sites.find((s) => s.id === id) ?? sites[0];
+  if (!site) throw new Error("No saved installation is available.");
   const day = useMemo(() => siteDay(site), [site]);
   const [hour, setHour] = useState(11);
   const [live, setLive] = useState(true);
@@ -79,11 +82,11 @@ function BatteryPage() {
 
         <Panel title="Battery health">
           <div className="flex items-center gap-5">
-            <Ring pct={97} size={96} color="var(--success)" sub="SoH" />
+            <Ring pct={site.batteryHealth.soh} size={96} color="var(--success)" sub="SoH" />
             <div className="space-y-2 text-sm">
               <p className="flex items-center gap-2"><HeartPulse className="h-4 w-4 text-success" />Good condition</p>
-              <p className="flex items-center gap-2 text-muted-foreground"><Repeat className="h-4 w-4" /><span className="num text-foreground">412</span> lifetime cycles</p>
-              <p className="flex items-center gap-2 text-muted-foreground"><Thermometer className="h-4 w-4" /><span className="num text-foreground">24°C</span> cell temp.</p>
+              <p className="flex items-center gap-2 text-muted-foreground"><Repeat className="h-4 w-4" /><span className="num text-foreground">{site.batteryHealth.cycles}</span> lifetime cycles</p>
+              <p className="flex items-center gap-2 text-muted-foreground"><Thermometer className="h-4 w-4" /><span className="num text-foreground">{site.batteryHealth.temperature}°C</span> cell temp.</p>
             </div>
           </div>
           <div className="mt-5 space-y-3">
@@ -91,7 +94,7 @@ function BatteryPage() {
             <Bar2 label="Capacity retained" pct={97} color="bg-success" />
             <Bar2 label="Used today" pct={Math.min(100, cycles * 100)} color="bg-warning" value={`${fmt(cycles, 2)} cycles`} />
           </div>
-          <p className="mt-4 text-[11px] text-muted-foreground">Health values are estimates from the battery management system.</p>
+          <p className="mt-4 text-[11px] text-muted-foreground">Saved simulated health values · manufacturer not connected.</p>
         </Panel>
       </div>
 

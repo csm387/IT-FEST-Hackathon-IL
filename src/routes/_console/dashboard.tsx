@@ -1,3 +1,4 @@
+import { useWorkspace } from '@/components/solar/WorkspaceProvider';
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
@@ -25,15 +26,15 @@ export const Route = createFileRoute("/_console/dashboard")({
 type Period = "today" | "7d" | "30d" | "year" | "custom";
 
 function Dashboard() {
-  const site = homeSite();
+  const { home: site } = useWorkspace();
   const [period, setPeriod] = useState<Period>("today");
   const [customDays, setCustomDays] = useState(14);
   const today = useMemo(() => siteDay(site), [site]);
   const t = sumDay(today);
   const now = today[13];
   const selfUsed = t.solar - t.export;
-  const sites = getSites();
-  const alerts = buildAlerts().filter((a) => a.status !== "Resolved");
+  const { sites, alerts: savedAlerts } = useWorkspace();
+  const alerts = savedAlerts.filter((a) => a.status !== "Resolved");
   const { data: w } = useQuery(weatherQuery(site.lat, site.lng));
   const savings = selfUsed * TARIFF.retailRON;
   const exportRev = t.export * TARIFF.exportRON;
@@ -52,7 +53,7 @@ function Dashboard() {
 
   return (
     <div>
-      <PageHeader title="Good afternoon, Andrei" subtitle="Saturday, 24 October · 13:00" />
+      <PageHeader title={`Good afternoon, ${Route.useRouteContext().account.fullName || "there"}`} subtitle="Saturday, 24 October · 13:00" />
 
       {/* Hero */}
       <div className="grid gap-4 xl:grid-cols-3">
@@ -161,7 +162,7 @@ function Dashboard() {
       </div>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
-        <Panel title="Fleet status" action={<Link to="/business/dispatch" className="text-xs text-solar hover:underline">Open dispatch</Link>}>
+        <Panel title={Route.useRouteContext().account.role === "business" ? "Fleet status" : "Installation status"} action={Route.useRouteContext().account.role === "business" ? <Link to="/business/dispatch" className="text-xs text-solar hover:underline">Open dispatch</Link> : undefined}>
           <div className="mb-4 flex items-center gap-4">
             <Ring pct={(online / sites.length) * 100} size={64} color="var(--success)" />
             <div><p className="text-sm"><span className="num font-semibold">{online}</span> of {sites.length} installations online</p><p className="flex items-center gap-1 text-xs text-muted-foreground"><Server className="h-3 w-3" />{sites.length - online} offline need attention</p></div>
@@ -176,7 +177,7 @@ function Dashboard() {
             ))}
           </div>
         </Panel>
-        <Panel title={<span className="flex items-center gap-2"><AlertTriangle className="h-4 w-4 text-warning" />Active anomalies · {alerts.length}</span>} action={<Link to="/operations" className="text-xs text-solar hover:underline">View all</Link>}>
+        <Panel title={<span className="flex items-center gap-2"><AlertTriangle className="h-4 w-4 text-warning" />Active anomalies · {alerts.length}</span>} action={Route.useRouteContext().account.role === "business" ? <Link to="/operations" className="text-xs text-solar hover:underline">View all</Link> : undefined}>
           <div className="space-y-2">
             {alerts.slice(0, 6).map((a) => (
               <Link key={a.id} to="/sites/$id" params={{ id: a.siteId }} className="flex items-center gap-3 rounded-xl bg-background/40 px-3 py-2.5 hover:bg-accent">
