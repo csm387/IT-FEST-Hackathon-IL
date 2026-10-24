@@ -46,7 +46,7 @@ function Finance() {
   ];
   const mixTotal = mix.reduce((a, b) => a + b.value, 0);
   const maxRoi = Math.max(...rows.map((r) => r.roi));
-  const top = rows.slice(0, 8).map((r) => ({ name: r.s.name, self: Math.round(r.selfValue), exp: Math.round(r.exportRev) }));
+  const top = [...rows].sort((a, b) => b.annual - a.annual).slice(0, 8).map((r) => ({ name: r.s.name, self: Math.round(r.selfValue), exp: Math.round(r.exportRev) }));
 
   return (
     <div>
