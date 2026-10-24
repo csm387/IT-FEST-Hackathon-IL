@@ -102,6 +102,7 @@ export type Database = {
         Returns: boolean
       }
       link_company: { Args: { _code: string }; Returns: string }
+      my_company_id: { Args: never; Returns: string }
     }
     Enums: {
       account_type: "individual" | "business"
