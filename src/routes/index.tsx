@@ -78,8 +78,8 @@ function Landing() {
           GridPulse brings production, batteries, savings and maintenance into one clear view — built for Romanian prosumers and the teams that keep their panels running.
         </p>
         <div className="mt-9 flex flex-wrap justify-center gap-3">
-          <Link to="/dashboard" className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 font-semibold text-primary-foreground">Try the live demo <ArrowRight className="h-4 w-4" /></Link>
-          <a href="#how" className="rounded-lg border border-border bg-card px-6 py-3 font-semibold hover:bg-accent">See how it works</a>
+          <Link to="/dashboard" className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 font-semibold text-primary-foreground">For your home <ArrowRight className="h-4 w-4" /></Link>
+          <Link to="/business" className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-6 py-3 font-semibold hover:bg-accent">For companies <ArrowRight className="h-4 w-4" /></Link>
         </div>
         <p className="mt-4 text-xs text-muted-foreground">No account needed · Demo runs on simulated data</p>
 
@@ -226,7 +226,7 @@ function Landing() {
       <footer className="border-t border-border">
         <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:px-6 md:grid-cols-4">
           <div><Logo /><p className="mt-3 text-sm text-muted-foreground">Every Watt Matters.</p></div>
-          <div className="text-sm"><p className="font-semibold">Product</p><div className="mt-3 flex flex-col gap-2 text-muted-foreground"><Link to="/dashboard">Dashboard</Link><Link to="/map">Fleet map</Link><Link to="/operations">O&M center</Link></div></div>
+          <div className="text-sm"><p className="font-semibold">Product</p><div className="mt-3 flex flex-col gap-2 text-muted-foreground"><Link to="/dashboard">Dashboard</Link><Link to="/business/dispatch">Dispatch</Link><Link to="/operations">O&M center</Link></div></div>
           <div className="text-sm"><p className="font-semibold">Resources</p><div className="mt-3 flex flex-col gap-2 text-muted-foreground"><Link to="/regulations">Regulations</Link><Link to="/forecast">Forecast</Link><a href="https://unsplash.com" target="_blank" rel="noreferrer">Photos: Unsplash</a></div></div>
           <div className="text-sm"><p className="font-semibold">Contact</p><div className="mt-3 flex flex-col gap-2 text-muted-foreground"><span className="flex items-center gap-2"><Mail className="h-4 w-4" />hello@gridpulse.ro</span><span className="flex items-center gap-2"><Gauge className="h-4 w-4" />Cluj-Napoca, România</span></div></div>
         </div>

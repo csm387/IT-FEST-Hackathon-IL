@@ -1,5 +1,6 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+import { useNavigate } from "@tanstack/react-router";
 import { Bell, LayoutDashboard, Map, Building2, Zap, BatteryCharging, CloudSun, Wallet, Scale, Lightbulb, Wrench, Search, CalendarClock } from "lucide-react";
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -8,24 +9,41 @@ import { cn } from "@/lib/utils";
 import gridpulseLogoLight from "@/assets/gridpulse-logo-light.png.asset.json";
 import gridpulseMark from "@/assets/gridpulse-mark.png.asset.json";
 
-const groups = [
-  { label: "Prosumer", items: [
+const SPACES = {
+  individual: { label: "My home", home: "/dashboard", items: [
     { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
     { title: "Energy flow", url: "/flow", icon: Zap },
     { title: "Battery", url: "/battery", icon: BatteryCharging },
     { title: "Forecast", url: "/forecast", icon: CloudSun },
     { title: "Recommendations", url: "/recommendations", icon: Lightbulb },
     { title: "Finance", url: "/finance", icon: Wallet },
+    { title: "My maintenance", url: "/maintenance", icon: CalendarClock },
     { title: "Regulations", url: "/regulations", icon: Scale },
+    { title: "Notifications", url: "/notifications", icon: Bell },
   ]},
-  { label: "Operations", items: [
-    { title: "Fleet map", url: "/map", icon: Map },
+  business: { label: "Business", home: "/business", items: [
+    { title: "Fleet dashboard", url: "/business", icon: LayoutDashboard },
+    { title: "Dispatch", url: "/business/dispatch", icon: Map },
     { title: "Installations", url: "/sites", icon: Building2 },
     { title: "O&M center", url: "/operations", icon: Wrench },
     { title: "Updates & maintenance", url: "/maintenance", icon: CalendarClock },
+    { title: "Portfolio finance", url: "/finance", icon: Wallet },
     { title: "Notifications", url: "/notifications", icon: Bell },
   ]},
-] as const;
+} as const;
+type Space = keyof typeof SPACES;
+const BUSINESS_ONLY = ["/business", "/sites", "/operations"];
+const INDIVIDUAL_ONLY = ["/dashboard", "/flow", "/battery", "/forecast", "/recommendations", "/regulations"];
+
+function useSpace(path: string): [Space, (s: Space) => void] {
+  const [space, setSpace] = useState<Space>("individual");
+  useEffect(() => { const v = localStorage.getItem("gp-space"); if (v === "business" || v === "individual") setSpace(v); }, []);
+  useEffect(() => {
+    const s: Space | null = BUSINESS_ONLY.some((p) => path.startsWith(p)) ? "business" : INDIVIDUAL_ONLY.some((p) => path.startsWith(p)) ? "individual" : null;
+    if (s) { setSpace(s); localStorage.setItem("gp-space", s); }
+  }, [path]);
+  return [space, (s) => { setSpace(s); localStorage.setItem("gp-space", s); }];
+}
 
 export function Logo({ compact }: { compact?: boolean }) {
   return compact
@@ -33,22 +51,22 @@ export function Logo({ compact }: { compact?: boolean }) {
     : <img src={gridpulseLogoLight.url} alt="GridPulse" className="h-6 w-auto" />;
 }
 
-function AppSidebar() {
+function AppSidebar({ space, path }: { space: Space; path: string }) {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
-  const path = useRouterState({ select: (r) => r.location.pathname });
+  const g = SPACES[space];
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="h-16 justify-center px-3"><Link to="/"><Logo compact={collapsed} /></Link></SidebarHeader>
       <SidebarContent>
-        {groups.map((g) => (
+        {[g].map((g) => (
           <SidebarGroup key={g.label}>
             <SidebarGroupLabel>{g.label}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
                 {g.items.map((it) => (
                   <SidebarMenuItem key={it.url}>
-                    <SidebarMenuButton asChild isActive={path.startsWith(it.url)} tooltip={it.title}>
+                    <SidebarMenuButton asChild isActive={it.url === "/business" ? path === "/business" || path === "/business/" : path.startsWith(it.url)} tooltip={it.title}>
                       <Link to={it.url}><it.icon className="h-4 w-4" /><span>{it.title}</span></Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -90,10 +108,14 @@ function Bellmenu() {
 }
 
 export function AppShell({ children }: { children: ReactNode }) {
+  const path = useRouterState({ select: (r) => r.location.pathname });
+  const [space, setSpace] = useSpace(path);
+  const navigate = useNavigate();
+  const switchTo = (s: Space) => { setSpace(s); navigate({ to: SPACES[s].home }); };
   return (
     <SidebarProvider>
       <div className="flex min-h-screen w-full">
-        <AppSidebar />
+        <AppSidebar space={space} path={path} />
         <div className="flex min-w-0 flex-1 flex-col">
           <header className="sticky top-0 z-[500] flex h-16 items-center gap-3 border-b border-border bg-background px-4">
             <SidebarTrigger />
@@ -102,6 +124,11 @@ export function AppShell({ children }: { children: ReactNode }) {
               <input placeholder="Search sites, alerts, inverters…" className="h-9 w-full rounded-xl border border-border bg-background/40 pl-9 pr-3 text-sm outline-none focus:border-primary/50" />
             </div>
             <div className="ml-auto flex items-center gap-3">
+              <div className="flex rounded-xl border border-border p-0.5 text-xs">
+                {(["individual", "business"] as Space[]).map((s) => (
+                  <button key={s} onClick={() => switchTo(s)} className={cn("rounded-lg px-3 py-1.5 font-medium", space === s ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground")}>{s === "individual" ? "Individual" : "Business"}</button>
+                ))}
+              </div>
               <span className="hidden items-center gap-2 rounded-full border border-border px-3 py-1 text-xs text-muted-foreground sm:flex">
                 <span className="relative h-2 w-2"><span className="pulse-ring absolute inset-0 rounded-full bg-solar" /><span className="absolute inset-0 rounded-full bg-solar" /></span>
                 Live · simulated data

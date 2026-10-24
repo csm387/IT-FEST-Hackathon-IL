@@ -161,7 +161,7 @@ function Dashboard() {
       </div>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
-        <Panel title="Fleet status" action={<Link to="/map" className="text-xs text-solar hover:underline">Open map</Link>}>
+        <Panel title="Fleet status" action={<Link to="/business/dispatch" className="text-xs text-solar hover:underline">Open dispatch</Link>}>
           <div className="mb-4 flex items-center gap-4">
             <Ring pct={(online / sites.length) * 100} size={64} color="var(--success)" />
             <div><p className="text-sm"><span className="num font-semibold">{online}</span> of {sites.length} installations online</p><p className="flex items-center gap-1 text-xs text-muted-foreground"><Server className="h-3 w-3" />{sites.length - online} offline need attention</p></div>

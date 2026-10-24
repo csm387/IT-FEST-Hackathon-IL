@@ -22,6 +22,8 @@ import { Route as ConsoleNotificationsRouteImport } from './routes/_console/noti
 import { Route as ConsoleOperationsRouteImport } from './routes/_console/operations'
 import { Route as ConsoleRecommendationsRouteImport } from './routes/_console/recommendations'
 import { Route as ConsoleRegulationsRouteImport } from './routes/_console/regulations'
+import { Route as ConsoleBusinessIndexRouteImport } from './routes/_console/business.index'
+import { Route as ConsoleBusinessDispatchRouteImport } from './routes/_console/business.dispatch'
 import { Route as ConsoleSitesIndexRouteImport } from './routes/_console/sites.index'
 import { Route as ConsoleSitesIdRouteImport } from './routes/_console/sites.$id'
 
@@ -89,6 +91,16 @@ const ConsoleRegulationsRoute = ConsoleRegulationsRouteImport.update({
   path: '/regulations',
   getParentRoute: () => ConsoleRoute,
 } as any)
+const ConsoleBusinessIndexRoute = ConsoleBusinessIndexRouteImport.update({
+  id: '/business/',
+  path: '/business/',
+  getParentRoute: () => ConsoleRoute,
+} as any)
+const ConsoleBusinessDispatchRoute = ConsoleBusinessDispatchRouteImport.update({
+  id: '/business/dispatch',
+  path: '/business/dispatch',
+  getParentRoute: () => ConsoleRoute,
+} as any)
 const ConsoleSitesIndexRoute = ConsoleSitesIndexRouteImport.update({
   id: '/sites/',
   path: '/sites/',
@@ -113,7 +125,9 @@ export interface FileRoutesByFullPath {
   '/operations': typeof ConsoleOperationsRoute
   '/recommendations': typeof ConsoleRecommendationsRoute
   '/regulations': typeof ConsoleRegulationsRoute
+  '/business/dispatch': typeof ConsoleBusinessDispatchRoute
   '/sites/$id': typeof ConsoleSitesIdRoute
+  '/business/': typeof ConsoleBusinessIndexRoute
   '/sites/': typeof ConsoleSitesIndexRoute
 }
 export interface FileRoutesByTo {
@@ -129,7 +143,9 @@ export interface FileRoutesByTo {
   '/operations': typeof ConsoleOperationsRoute
   '/recommendations': typeof ConsoleRecommendationsRoute
   '/regulations': typeof ConsoleRegulationsRoute
+  '/business/dispatch': typeof ConsoleBusinessDispatchRoute
   '/sites/$id': typeof ConsoleSitesIdRoute
+  '/business': typeof ConsoleBusinessIndexRoute
   '/sites': typeof ConsoleSitesIndexRoute
 }
 export interface FileRoutesById {
@@ -147,7 +163,9 @@ export interface FileRoutesById {
   '/_console/operations': typeof ConsoleOperationsRoute
   '/_console/recommendations': typeof ConsoleRecommendationsRoute
   '/_console/regulations': typeof ConsoleRegulationsRoute
+  '/_console/business/dispatch': typeof ConsoleBusinessDispatchRoute
   '/_console/sites/$id': typeof ConsoleSitesIdRoute
+  '/_console/business/': typeof ConsoleBusinessIndexRoute
   '/_console/sites/': typeof ConsoleSitesIndexRoute
 }
 export interface FileRouteTypes {
@@ -165,7 +183,9 @@ export interface FileRouteTypes {
     | '/operations'
     | '/recommendations'
     | '/regulations'
+    | '/business/dispatch'
     | '/sites/$id'
+    | '/business/'
     | '/sites/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -181,7 +201,9 @@ export interface FileRouteTypes {
     | '/operations'
     | '/recommendations'
     | '/regulations'
+    | '/business/dispatch'
     | '/sites/$id'
+    | '/business'
     | '/sites'
   id:
     | '__root__'
@@ -198,7 +220,9 @@ export interface FileRouteTypes {
     | '/_console/operations'
     | '/_console/recommendations'
     | '/_console/regulations'
+    | '/_console/business/dispatch'
     | '/_console/sites/$id'
+    | '/_console/business/'
     | '/_console/sites/'
   fileRoutesById: FileRoutesById
 }
@@ -300,6 +324,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConsoleRegulationsRouteImport
       parentRoute: typeof ConsoleRoute
     }
+    '/_console/business/': {
+      id: '/_console/business/'
+      path: '/business'
+      fullPath: '/business/'
+      preLoaderRoute: typeof ConsoleBusinessIndexRouteImport
+      parentRoute: typeof ConsoleRoute
+    }
+    '/_console/business/dispatch': {
+      id: '/_console/business/dispatch'
+      path: '/business/dispatch'
+      fullPath: '/business/dispatch'
+      preLoaderRoute: typeof ConsoleBusinessDispatchRouteImport
+      parentRoute: typeof ConsoleRoute
+    }
     '/_console/sites/': {
       id: '/_console/sites/'
       path: '/sites'
@@ -329,7 +367,9 @@ interface ConsoleRouteChildren {
   ConsoleOperationsRoute: typeof ConsoleOperationsRoute
   ConsoleRecommendationsRoute: typeof ConsoleRecommendationsRoute
   ConsoleRegulationsRoute: typeof ConsoleRegulationsRoute
+  ConsoleBusinessDispatchRoute: typeof ConsoleBusinessDispatchRoute
   ConsoleSitesIdRoute: typeof ConsoleSitesIdRoute
+  ConsoleBusinessIndexRoute: typeof ConsoleBusinessIndexRoute
   ConsoleSitesIndexRoute: typeof ConsoleSitesIndexRoute
 }
 
@@ -345,7 +385,9 @@ const ConsoleRouteChildren: ConsoleRouteChildren = {
   ConsoleOperationsRoute: ConsoleOperationsRoute,
   ConsoleRecommendationsRoute: ConsoleRecommendationsRoute,
   ConsoleRegulationsRoute: ConsoleRegulationsRoute,
+  ConsoleBusinessDispatchRoute: ConsoleBusinessDispatchRoute,
   ConsoleSitesIdRoute: ConsoleSitesIdRoute,
+  ConsoleBusinessIndexRoute: ConsoleBusinessIndexRoute,
   ConsoleSitesIndexRoute: ConsoleSitesIndexRoute,
 }
 
