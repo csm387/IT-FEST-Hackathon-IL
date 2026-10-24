@@ -95,3 +95,35 @@ export const axis = { stroke: "var(--muted-foreground)", fontSize: 11, tickLine:
 
 export const ron = (n: number) => new Intl.NumberFormat("ro-RO", { maximumFractionDigits: 0 }).format(n);
 export const fmt = (n: number, d = 1) => new Intl.NumberFormat("en-US", { maximumFractionDigits: d, minimumFractionDigits: d }).format(n);
+
+export function Ring({ pct, color = "var(--solar)", size = 72, label, sub }: { pct: number; color?: string; size?: number; label?: ReactNode; sub?: string }) {
+  const p = Math.max(0, Math.min(100, pct));
+  return (
+    <div className="relative shrink-0" style={{ width: size, height: size }}>
+      <svg viewBox="0 0 36 36" className="h-full w-full -rotate-90">
+        <circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--muted)" strokeWidth="3.2" />
+        <circle cx="18" cy="18" r="15.9" fill="none" stroke={color} strokeWidth="3.2" strokeDasharray={`${p} 100`} strokeLinecap="round" className="transition-all duration-700" />
+      </svg>
+      <div className="absolute inset-0 grid place-items-center text-center leading-tight">
+        <div><p className="num text-sm font-semibold">{label ?? `${Math.round(p)}%`}</p>{sub && <p className="text-[9px] text-muted-foreground">{sub}</p>}</div>
+      </div>
+    </div>
+  );
+}
+
+/** Horizontal battery illustration with 10 cells */
+export function BatteryGauge({ soc, charging }: { soc: number; charging?: boolean }) {
+  const cells = 10;
+  const filled = Math.round(soc * cells);
+  const color = soc < 0.2 ? "bg-destructive" : soc < 0.4 ? "bg-warning" : "bg-battery";
+  return (
+    <div className="flex items-center">
+      <div className="flex h-24 flex-1 gap-1.5 rounded-2xl border-2 border-border p-2">
+        {Array.from({ length: cells }).map((_, i) => (
+          <span key={i} className={cn("flex-1 rounded-md transition-colors duration-500", i < filled ? color : "bg-muted", charging && i === filled && "animate-pulse bg-battery/40")} />
+        ))}
+      </div>
+      <span className="h-8 w-2 rounded-r-md bg-border" />
+    </div>
+  );
+}
