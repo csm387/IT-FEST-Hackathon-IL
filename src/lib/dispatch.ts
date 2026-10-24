@@ -50,6 +50,6 @@ export function buildJobs(sites: Site[]): Job[] {
   const titles: Record<string, string> = { critical: "Inverter fault – on-site check", offline: "Site offline – restore comms", under: "Underperformance – panel inspection" };
   return sites.filter((s) => s.status !== "normal").map((s, i) => ({
     id: `J-${1000 + i}`, siteId: s.id, title: titles[s.status], priority: s.priority,
-    status: i % 4 === 0 ? "Assigned" : "New", crewId: i % 4 === 0 ? nearestCrew(s, CREWS)!.id : null,
+    status: i % 4 === 0 ? "Assigned" : "New", crewId: i % 4 === 0 ? nearestCrew(s, CREWS)?.id ?? null : null,
   }));
 }

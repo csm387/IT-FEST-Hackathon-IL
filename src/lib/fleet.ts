@@ -110,6 +110,10 @@ export interface HourPoint {
 }
 
 export function siteDay(site: Site, dayOffset = 0, weatherFactor?: number[]): HourPoint[] {
+  if ('readings' in site) {
+    const readings = site.readings as HourPoint[][];
+    return readings[Math.min(Math.max(0, dayOffset), readings.length - 1)] ?? [];
+  }
   const r = mulberry(site.id.charCodeAt(5) * 31 + dayOffset * 7 + 3);
   const loadBase = site.type === "Residential" ? 0.9 : site.kWp * 0.18;
   let soc = 0.35;
@@ -171,6 +175,7 @@ export function yearly(site: Site) {
   const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
   const seasonal = [0.35, 0.5, 0.75, 0.95, 1.15, 1.25, 1.3, 1.2, 0.95, 0.7, 0.42, 0.3];
   const day = sumDay(siteDay(site, 0));
+  // Saved readings are the inputs; annual totals remain explicitly estimated.
   return months.slice(0, 10).map((m, i) => ({
     label: m, solar: +(day.solar * 30 * seasonal[i] / 0.7).toFixed(0), load: +(day.load * 30 * (1.25 - seasonal[i] * 0.3)).toFixed(0),
     import: +(day.import * 30 * (1.4 - seasonal[i] * 0.5)).toFixed(0), export: +(day.export * 30 * seasonal[i] * 1.2).toFixed(0), charged: +(day.charged * 30).toFixed(0),
