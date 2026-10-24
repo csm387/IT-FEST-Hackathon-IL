@@ -107,7 +107,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                 Live · simulated data
               </span>
               <Bellmenu />
-              <span className="grid h-9 w-9 place-items-center rounded-full bg-secondary text-xs font-bold text-primary-foreground">AP</span>
+              <span className="grid h-9 w-9 place-items-center rounded-full bg-secondary text-xs font-bold text-foreground">AP</span>
             </div>
           </header>
           <main className="flex-1 p-4 sm:p-6 lg:p-8">{children}</main>

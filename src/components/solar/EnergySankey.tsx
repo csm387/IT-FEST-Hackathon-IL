@@ -54,9 +54,9 @@ export function EnergySankey({ data, unit = "kWh" }: { data: SankeyInput; unit?:
   const avail = H - TOP - 10;
   const scale = Math.min(...colTotals.map((ns) => (avail - GAP * (ns.length - 1)) / ns.reduce((a, n) => a + n.value, 0)));
   const pos: Record<string, { y: number; h: number; outY: number; inY: number }> = {};
-  colTotals.forEach((ns) => {
+  colTotals.forEach((ns, c) => {
     let y = TOP;
-    ns.forEach((n) => { const h = Math.max(2, n.value * scale); pos[n.id] = { y, h, outY: y, inY: y }; y += h + GAP; });
+    ns.forEach((n) => { const h = Math.max(2, n.value * scale); pos[n.id] = { y, h, outY: y, inY: y }; y += (c === 2 ? Math.max(h, 38) : h) + GAP; });
   });
   const colSum = (c: number) => nodes.filter((n) => n.col === c && n.id !== "batt-in" && n.id !== "export").reduce((a, n) => a + n.value, 0);
   const color = (id: string) => nodes.find((n) => n.id === id)!.color;
