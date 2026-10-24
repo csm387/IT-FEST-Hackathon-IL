@@ -6,6 +6,8 @@ import { Area, CartesianGrid, ComposedChart, Legend, Line, ResponsiveContainer, 
 import { ArrowLeft, MapPin, Cpu, LayoutGrid, BatteryFull, CalendarDays, HeartPulse, PiggyBank, TrendingDown } from "lucide-react";
 import { Kpi, Panel, SeverityChip, StatusBadge, axis, chartTooltip, fmt, ron } from "@/components/solar/ui";
 import { buildAlerts, getSite, healthScore, siteDay, sumDay, TARIFF } from "@/lib/fleet";
+import { currentPolicy, daysRemaining, policyStatus } from "@/lib/insurance";
+import { InsuranceBadge } from "./insurance";
 
 export const Route = createFileRoute("/_console/sites/$id")({
   loader: async ({ params, context }) => { const saved = await context.queryClient.ensureQueryData(workspaceQuery(context.account.userId)); const s = saved.sites.find(s => s.id === params.id); if (!s) throw notFound(); return { name: s.name, city: s.city, image: s.image }; },

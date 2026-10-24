@@ -21,6 +21,7 @@ export function NotificationsProvider({ userId, children }: { userId: string; ch
   const client = useQueryClient();
   const queryKey = useMemo(() => ['notifications', userId], [userId]);
   const [prefs, setPrefs] = useSavedSetting(userId, 'prefs', defaultPrefs);
+  const [sentInsurance, setSentInsurance] = useSavedSetting<Record<string, string>>(userId, 'insuranceSent', {});
   const lastByKey = useRef<Record<string, number>>({});
   const { data: notes = [] } = useQuery({ queryKey, queryFn: async () => {
     const { data, error } = await supabase.from('notifications').select('*').eq('user_id', userId).order('created_at', { ascending: false });
@@ -59,14 +60,19 @@ export function NotificationsProvider({ userId, children }: { userId: string; ch
     }, 45000);
     return () => clearInterval(id);
   }, [prefs, push, home]);
-  // Insurance expiry reminders: checked on load and daily; each threshold sends once per policy.
+  // Insurance expiry reminders: checked on load and every 6h; each threshold sends once per policy (persisted).
   useEffect(() => {
     if (!prefs.insurance) return;
     const check = () => {
       const today = new Date().toISOString().slice(0, 10);
+      const sent = { ...sentInsurance };
+      let changed = false;
       for (const policy of policies) {
         const site = sites.find(s => s.id === policy.siteId);
         for (const r of dueReminders(policy, today)) {
+          if (sent[r.key]) continue;
+          sent[r.key] = today;
+          changed = true;
           push({
             key: r.key, kind: 'system', priority: r.daysLeft <= 7 ? 'warning' : 'info',
             title: r.daysLeft === 0 ? '🛡️ Insurance expires today' : '🛡️ Insurance expiring soon',
@@ -76,11 +82,12 @@ export function NotificationsProvider({ userId, children }: { userId: string; ch
           });
         }
       }
+      if (changed) setSentInsurance(sent);
     };
     check();
     const id = setInterval(check, 6 * 3600000);
     return () => clearInterval(id);
-  }, [prefs.insurance, policies, sites, push]);
+  }, [prefs.insurance, policies, sites, push, sentInsurance, setSentInsurance]);
   return <NotificationsCtx.Provider value={{ notes, prefs, setPrefs, push, unread: notes.filter(n => !n.read).length, markAll: () => { void mark(); }, markRead: id => { void mark(id); } }}>{children}</NotificationsCtx.Provider>;
 }
 export function useNotifications() {
