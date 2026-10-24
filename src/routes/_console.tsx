@@ -3,6 +3,7 @@ import { AppShell } from "@/components/solar/AppShell";
 import { NotificationsProvider } from "@/components/solar/notifications";
 import { canOpen, loadAccount } from "@/lib/account";
 import { WorkspaceProvider, workspaceQuery } from '@/components/solar/WorkspaceProvider';
+import { SessionExpiredError } from '@/lib/session-recovery';
 
 export const Route = createFileRoute("/_console")({
   ssr: false,
@@ -14,7 +15,17 @@ export const Route = createFileRoute("/_console")({
     return { account };
   },
   component: ConsoleLayout,
-  loader: ({ context }) => context.queryClient.ensureQueryData(workspaceQuery(context.account.userId)),
+  loader: async ({ context }) => {
+    try {
+      return await context.queryClient.ensureQueryData(workspaceQuery(context.account.userId));
+    } catch (error) {
+      if (error instanceof SessionExpiredError) {
+        context.queryClient.clear();
+        throw redirect({ to: '/auth', replace: true });
+      }
+      throw error;
+    }
+  },
 });
 
 function ConsoleLayout() {
