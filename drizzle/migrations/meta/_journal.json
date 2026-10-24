@@ -36,6 +36,13 @@
       "when": 1792852737925,
       "tag": "0004_restrict_internal_account_provisioning",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1792853866634,
+      "tag": "0005_create_insurance_tables",
+      "breakpoints": true
     }
   ]
 }
