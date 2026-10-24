@@ -8,6 +8,8 @@ import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_console/operations")({
   head: () => ({ meta: [
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
     { title: "O&M Center — SolarOps" },
     { name: "description", content: "Fleet-wide anomaly detection, alerts, tickets and technician assignment." },
     { property: "og:title", content: "O&M Center — SolarOps" },
@@ -38,7 +40,7 @@ function Ops() {
 
   return (
     <div>
-      <PageHeader title="O&M operations center" subtitle="Rule-based anomaly detection · weather-aware · ready for ML extension" />
+      <PageHeader title="O&M operations center" subtitle="Rule-based anomaly detection · weather-aware · ready for ML extension" actions={<Link to="/maintenance" className="rounded-md border border-border px-3 py-2 text-sm hover:bg-accent">Updates & maintenance →</Link>} />
       <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
         <Kpi icon={Activity} label="Fleet monitored" value={sites.length} tone="home" />
         <Kpi icon={Gauge} label="Avg health score" value={avgHealth} unit="/100" />

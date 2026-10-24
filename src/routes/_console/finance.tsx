@@ -9,6 +9,8 @@ import { paybackYears, roiPercent } from "@/lib/energy";
 
 export const Route = createFileRoute("/_console/finance")({
   head: () => ({ meta: [
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
     { title: "Financial Tracking — SolarOps" },
     { name: "description", content: "Cost, savings, export revenue, ROI and payback per installation in RON." },
     { property: "og:title", content: "Financial Tracking — SolarOps" },

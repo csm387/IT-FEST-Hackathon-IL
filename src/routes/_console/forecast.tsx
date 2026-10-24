@@ -11,6 +11,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export const Route = createFileRoute("/_console/forecast")({
   head: () => ({ meta: [
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
     { title: "Weather & Solar Forecast — SolarOps" },
     { name: "description", content: "Live Open-Meteo weather, irradiance and 48h solar production forecast per installation." },
     { property: "og:title", content: "Weather & Solar Forecast — SolarOps" },

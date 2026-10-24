@@ -10,6 +10,8 @@ const FleetMap = lazy(() => import("@/components/solar/FleetMap"));
 
 export const Route = createFileRoute("/_console/map")({
   head: () => ({ meta: [
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
     { title: "Fleet Map — SolarOps" },
     { name: "description", content: "Interactive map of solar installations across Romania with live status." },
     { property: "og:title", content: "Fleet Map — SolarOps" },

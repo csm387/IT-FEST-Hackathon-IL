@@ -12,6 +12,8 @@ import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_console/dashboard")({
   head: () => ({ meta: [
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
     { title: "Dashboard — SolarOps" },
     { name: "description", content: "Live solar production, consumption, battery and grid exchange with savings in RON." },
     { property: "og:title", content: "Dashboard — SolarOps" },

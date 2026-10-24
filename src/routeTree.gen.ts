@@ -16,6 +16,7 @@ import { Route as ConsoleDashboardRouteImport } from './routes/_console/dashboar
 import { Route as ConsoleFinanceRouteImport } from './routes/_console/finance'
 import { Route as ConsoleFlowRouteImport } from './routes/_console/flow'
 import { Route as ConsoleForecastRouteImport } from './routes/_console/forecast'
+import { Route as ConsoleMaintenanceRouteImport } from './routes/_console/maintenance'
 import { Route as ConsoleMapRouteImport } from './routes/_console/map'
 import { Route as ConsoleNotificationsRouteImport } from './routes/_console/notifications'
 import { Route as ConsoleOperationsRouteImport } from './routes/_console/operations'
@@ -56,6 +57,11 @@ const ConsoleFlowRoute = ConsoleFlowRouteImport.update({
 const ConsoleForecastRoute = ConsoleForecastRouteImport.update({
   id: '/forecast',
   path: '/forecast',
+  getParentRoute: () => ConsoleRoute,
+} as any)
+const ConsoleMaintenanceRoute = ConsoleMaintenanceRouteImport.update({
+  id: '/maintenance',
+  path: '/maintenance',
   getParentRoute: () => ConsoleRoute,
 } as any)
 const ConsoleMapRoute = ConsoleMapRouteImport.update({
@@ -101,6 +107,7 @@ export interface FileRoutesByFullPath {
   '/finance': typeof ConsoleFinanceRoute
   '/flow': typeof ConsoleFlowRoute
   '/forecast': typeof ConsoleForecastRoute
+  '/maintenance': typeof ConsoleMaintenanceRoute
   '/map': typeof ConsoleMapRoute
   '/notifications': typeof ConsoleNotificationsRoute
   '/operations': typeof ConsoleOperationsRoute
@@ -116,6 +123,7 @@ export interface FileRoutesByTo {
   '/finance': typeof ConsoleFinanceRoute
   '/flow': typeof ConsoleFlowRoute
   '/forecast': typeof ConsoleForecastRoute
+  '/maintenance': typeof ConsoleMaintenanceRoute
   '/map': typeof ConsoleMapRoute
   '/notifications': typeof ConsoleNotificationsRoute
   '/operations': typeof ConsoleOperationsRoute
@@ -133,6 +141,7 @@ export interface FileRoutesById {
   '/_console/finance': typeof ConsoleFinanceRoute
   '/_console/flow': typeof ConsoleFlowRoute
   '/_console/forecast': typeof ConsoleForecastRoute
+  '/_console/maintenance': typeof ConsoleMaintenanceRoute
   '/_console/map': typeof ConsoleMapRoute
   '/_console/notifications': typeof ConsoleNotificationsRoute
   '/_console/operations': typeof ConsoleOperationsRoute
@@ -150,6 +159,7 @@ export interface FileRouteTypes {
     | '/finance'
     | '/flow'
     | '/forecast'
+    | '/maintenance'
     | '/map'
     | '/notifications'
     | '/operations'
@@ -165,6 +175,7 @@ export interface FileRouteTypes {
     | '/finance'
     | '/flow'
     | '/forecast'
+    | '/maintenance'
     | '/map'
     | '/notifications'
     | '/operations'
@@ -181,6 +192,7 @@ export interface FileRouteTypes {
     | '/_console/finance'
     | '/_console/flow'
     | '/_console/forecast'
+    | '/_console/maintenance'
     | '/_console/map'
     | '/_console/notifications'
     | '/_console/operations'
@@ -246,6 +258,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConsoleForecastRouteImport
       parentRoute: typeof ConsoleRoute
     }
+    '/_console/maintenance': {
+      id: '/_console/maintenance'
+      path: '/maintenance'
+      fullPath: '/maintenance'
+      preLoaderRoute: typeof ConsoleMaintenanceRouteImport
+      parentRoute: typeof ConsoleRoute
+    }
     '/_console/map': {
       id: '/_console/map'
       path: '/map'
@@ -304,6 +323,7 @@ interface ConsoleRouteChildren {
   ConsoleFinanceRoute: typeof ConsoleFinanceRoute
   ConsoleFlowRoute: typeof ConsoleFlowRoute
   ConsoleForecastRoute: typeof ConsoleForecastRoute
+  ConsoleMaintenanceRoute: typeof ConsoleMaintenanceRoute
   ConsoleMapRoute: typeof ConsoleMapRoute
   ConsoleNotificationsRoute: typeof ConsoleNotificationsRoute
   ConsoleOperationsRoute: typeof ConsoleOperationsRoute
@@ -319,6 +339,7 @@ const ConsoleRouteChildren: ConsoleRouteChildren = {
   ConsoleFinanceRoute: ConsoleFinanceRoute,
   ConsoleFlowRoute: ConsoleFlowRoute,
   ConsoleForecastRoute: ConsoleForecastRoute,
+  ConsoleMaintenanceRoute: ConsoleMaintenanceRoute,
   ConsoleMapRoute: ConsoleMapRoute,
   ConsoleNotificationsRoute: ConsoleNotificationsRoute,
   ConsoleOperationsRoute: ConsoleOperationsRoute,

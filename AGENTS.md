@@ -11,3 +11,4 @@
 
 - App pages live under the `_console` pathless layout (sidebar shell + notifications provider); the landing page `/` stays outside it. Why: one shared shell for all dashboard pages.
 - Business rules (energy balance, battery, compensation, finance, anomalies) are pure functions in `src/lib/energy.ts` with tests in `src/test/energy.test.ts`; simulated fleet data lives in `src/lib/fleet.ts`. Why: swap simulation for real data later without touching rules.
+- Maintenance scheduling and explicitly simulated service records live in `src/lib/maintenance.ts`, with separate rule tests; unconnected manufacturer software status remains unverified rather than inferred. Why: service dates and firmware availability must not be presented as real telemetry.
