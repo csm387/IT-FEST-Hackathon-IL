@@ -33,12 +33,12 @@ function AccountPage() {
 
   async function save() {
     const { error } = await supabase.from("profiles").update({ full_name: name, ...(account.role === "business" ? { company_name: company } : {}) }).eq("id", account.userId);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Saved"); router.invalidate();
   }
   async function link(c: string | null) {
     const { data, error } = await supabase.rpc("link_company", { _code: c ?? "" });
-    if (error) return toast.error(error.message.includes("Invalid") ? "That company code doesn't exist." : error.message);
+    if (error) { toast.error(error.message.includes("Invalid") ? "That company code doesn't exist." : error.message); return; }
     setLinkedName(data ?? null); setCode(""); toast.success(c ? `Linked to ${data}` : "Company unlinked"); router.invalidate();
   }
 

@@ -30,7 +30,7 @@ function Onboarding() {
   const [company, setCompany] = useState("");
   async function save() {
     const { error } = await supabase.rpc("choose_account_type", { _type: type, _company: company || undefined });
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     navigate({ to: type === "business" ? "/business" : "/dashboard" });
   }
   return (
