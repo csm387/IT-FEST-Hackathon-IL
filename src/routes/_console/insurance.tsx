@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useWorkspace } from "@/components/solar/WorkspaceProvider";
 import { supabase } from "@/integrations/supabase/client";
-import { deleteClaim, deletePolicy, saveClaim, savePolicy } from "@/lib/insurance.functions";
+import { deleteClaim, deletePolicy, saveClaim, savePolicy } from "@/lib/insurance-data";
 import { CLAIM_STATUSES, currentPolicy, daysRemaining, fleetKpis, policyStatus, STATUS_LABEL, type Claim, type ClaimStatus, type InsuranceStatus, type Policy } from "@/lib/insurance";
 import { cn } from "@/lib/utils";
 

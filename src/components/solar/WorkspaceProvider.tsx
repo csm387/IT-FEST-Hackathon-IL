@@ -2,7 +2,7 @@ import { createContext, useContext, type ReactNode } from 'react';
 import { useQueryClient, useSuspenseQuery, queryOptions } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { loadWorkspace } from '@/lib/workspace.functions';
+import { loadWorkspace } from '@/lib/workspace-data';
 import { workspaceHome, type Workspace } from '@/lib/workspace';
 import type { Account } from '@/lib/account';
 import type { Job } from '@/lib/dispatch';
