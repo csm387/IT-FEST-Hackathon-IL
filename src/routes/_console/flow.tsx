@@ -41,7 +41,7 @@ function FlowPage() {
     window.addEventListener("keydown", k);
     return () => window.removeEventListener("keydown", k);
   }, []);
-  const phase = p.solar < 0.05 ? { icon: Moon, label: "Night: home runs on battery and grid" } : p.solar > p.load ? { icon: Sun, label: "Solar surplus: charging battery and exporting" } : { icon: CloudSun, label: "Solar covers part of the home" };
+  const phase = p.solar < 0.05 ? { icon: Moon, label: "Night: home runs on battery and grid" } : p.solar > p.load ? { icon: Sun, label: f.solarToBattery > 0.01 ? "Solar surplus: charging the battery" : "Solar surplus: battery full, exporting to grid" } : { icon: CloudSun, label: "Solar covers part of the home" };
   const homeMix = [
     { l: "Solar", v: f.solarToHome, c: "bg-solar" },
     { l: "Battery", v: f.batteryToHome, c: "bg-battery" },
@@ -71,8 +71,8 @@ function FlowPage() {
               <p className="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground"><phase.icon className="h-4 w-4" />{phase.label}</p>
             </div>
             <div className="grid grid-cols-3 gap-4 text-right">
-              <div><p className="text-xs text-muted-foreground">Solar</p><p className="num text-lg text-solar">{fmt(p.solar, 2)}<span className="text-xs text-muted-foreground"> kW</span></p></div>
-              <div><p className="text-xs text-muted-foreground">Home</p><p className="num text-lg">{fmt(p.load, 2)}<span className="text-xs text-muted-foreground"> kW</span></p></div>
+              <div><p className="text-xs text-muted-foreground">Solar</p><p className="num whitespace-nowrap text-lg text-solar">{fmt(p.solar, 2)}<span className="text-xs text-muted-foreground"> kW</span></p></div>
+              <div><p className="text-xs text-muted-foreground">Home</p><p className="num whitespace-nowrap text-lg">{fmt(p.load, 2)}<span className="text-xs text-muted-foreground"> kW</span></p></div>
               <div><p className="text-xs text-muted-foreground">Battery</p><p className="num text-lg text-battery">{Math.round(p.soc * 100)}%</p></div>
             </div>
           </div>
