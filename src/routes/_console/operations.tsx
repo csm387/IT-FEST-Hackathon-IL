@@ -8,6 +8,8 @@ import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_console/operations")({
   head: () => ({ meta: [
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
     { title: "O&M Center — SolarOps" },
     { name: "description", content: "Fleet-wide anomaly detection, alerts, tickets and technician assignment." },
     { property: "og:title", content: "O&M Center — SolarOps" },

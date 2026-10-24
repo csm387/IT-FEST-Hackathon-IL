@@ -8,6 +8,8 @@ import { buildAlerts, getSite, healthScore, siteDay, sumDay, TARIFF } from "@/li
 export const Route = createFileRoute("/_console/sites/$id")({
   loader: ({ params }) => { const s = getSite(params.id); if (!s) throw notFound(); return { name: s.name, city: s.city, image: s.image }; },
   head: ({ loaderData }) => ({ meta: [
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary_large_image" },
     { title: loaderData ? `${loaderData.name} — SolarOps` : "Installation — SolarOps" },
     { name: "description", content: loaderData ? `Performance, alerts and finances for ${loaderData.name} in ${loaderData.city}.` : "Installation details." },
     { property: "og:title", content: loaderData ? `${loaderData.name} — SolarOps` : "Installation — SolarOps" },

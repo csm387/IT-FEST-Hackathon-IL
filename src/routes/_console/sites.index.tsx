@@ -7,6 +7,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 export const Route = createFileRoute("/_console/sites/")({
   head: () => ({ meta: [
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
     { title: "Installations — SolarOps" },
     { name: "description", content: "All solar installations with health scores and comparison tools." },
     { property: "og:title", content: "Installations — SolarOps" },

@@ -9,6 +9,8 @@ import { computeFlows } from "@/lib/energy";
 
 export const Route = createFileRoute("/_console/flow")({
   head: () => ({ meta: [
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
     { title: "Live Energy Flow — SolarOps" },
     { name: "description", content: "Animated energy flow between solar panels, home, battery and grid." },
     { property: "og:title", content: "Live Energy Flow — SolarOps" },
