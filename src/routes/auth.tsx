@@ -1,12 +1,12 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Home, Building2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { Logo } from "@/components/solar/AppShell";
 import { cn } from "@/lib/utils";
 import type { AccountType } from "@/lib/account";
+import { TypePicker } from "@/components/solar/TypePicker";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({ meta: [
@@ -21,22 +21,6 @@ export const Route = createFileRoute("/auth")({
 });
 
 const input = "h-10 w-full rounded-lg border border-border bg-background px-3 text-sm outline-none focus:border-primary";
-
-export function TypePicker({ value, onChange }: { value: AccountType; onChange: (t: AccountType) => void }) {
-  const opts = [
-    { v: "individual" as const, icon: Home, t: "Individual", d: "My home installation" },
-    { v: "business" as const, icon: Building2, t: "Business", d: "Installer / O&M company" },
-  ];
-  return (
-    <div className="grid grid-cols-2 gap-2">
-      {opts.map((o) => (
-        <button type="button" key={o.v} onClick={() => onChange(o.v)} className={cn("rounded-xl border p-3 text-left", value === o.v ? "border-primary bg-primary/10" : "border-border hover:bg-accent")}>
-          <o.icon className="h-4 w-4" /><div className="mt-2 text-sm font-semibold">{o.t}</div><div className="text-xs text-muted-foreground">{o.d}</div>
-        </button>
-      ))}
-    </div>
-  );
-}
 
 function AuthPage() {
   const navigate = useNavigate();

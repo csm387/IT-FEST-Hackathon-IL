@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ConsoleRouteImport } from './routes/_console'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
+import { Route as ConsoleAccountRouteImport } from './routes/_console/account'
 import { Route as ConsoleBatteryRouteImport } from './routes/_console/battery'
 import { Route as ConsoleDashboardRouteImport } from './routes/_console/dashboard'
 import { Route as ConsoleFinanceRouteImport } from './routes/_console/finance'
@@ -25,6 +26,7 @@ import { Route as ConsoleOperationsRouteImport } from './routes/_console/operati
 import { Route as ConsoleRecommendationsRouteImport } from './routes/_console/recommendations'
 import { Route as ConsoleRegulationsRouteImport } from './routes/_console/regulations'
 import { Route as ConsoleBusinessIndexRouteImport } from './routes/_console/business.index'
+import { Route as ConsoleBusinessClientsRouteImport } from './routes/_console/business.clients'
 import { Route as ConsoleBusinessDispatchRouteImport } from './routes/_console/business.dispatch'
 import { Route as ConsoleSitesIndexRouteImport } from './routes/_console/sites.index'
 import { Route as ConsoleSitesIdRouteImport } from './routes/_console/sites.$id'
@@ -47,6 +49,11 @@ const OnboardingRoute = OnboardingRouteImport.update({
   id: '/onboarding',
   path: '/onboarding',
   getParentRoute: () => rootRouteImport,
+} as any)
+const ConsoleAccountRoute = ConsoleAccountRouteImport.update({
+  id: '/account',
+  path: '/account',
+  getParentRoute: () => ConsoleRoute,
 } as any)
 const ConsoleBatteryRoute = ConsoleBatteryRouteImport.update({
   id: '/battery',
@@ -108,6 +115,11 @@ const ConsoleBusinessIndexRoute = ConsoleBusinessIndexRouteImport.update({
   path: '/business/',
   getParentRoute: () => ConsoleRoute,
 } as any)
+const ConsoleBusinessClientsRoute = ConsoleBusinessClientsRouteImport.update({
+  id: '/business/clients',
+  path: '/business/clients',
+  getParentRoute: () => ConsoleRoute,
+} as any)
 const ConsoleBusinessDispatchRoute = ConsoleBusinessDispatchRouteImport.update({
   id: '/business/dispatch',
   path: '/business/dispatch',
@@ -128,6 +140,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/onboarding': typeof OnboardingRoute
+  '/account': typeof ConsoleAccountRoute
   '/battery': typeof ConsoleBatteryRoute
   '/dashboard': typeof ConsoleDashboardRoute
   '/finance': typeof ConsoleFinanceRoute
@@ -139,6 +152,7 @@ export interface FileRoutesByFullPath {
   '/operations': typeof ConsoleOperationsRoute
   '/recommendations': typeof ConsoleRecommendationsRoute
   '/regulations': typeof ConsoleRegulationsRoute
+  '/business/clients': typeof ConsoleBusinessClientsRoute
   '/business/dispatch': typeof ConsoleBusinessDispatchRoute
   '/sites/$id': typeof ConsoleSitesIdRoute
   '/business/': typeof ConsoleBusinessIndexRoute
@@ -148,6 +162,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/onboarding': typeof OnboardingRoute
+  '/account': typeof ConsoleAccountRoute
   '/battery': typeof ConsoleBatteryRoute
   '/dashboard': typeof ConsoleDashboardRoute
   '/finance': typeof ConsoleFinanceRoute
@@ -159,6 +174,7 @@ export interface FileRoutesByTo {
   '/operations': typeof ConsoleOperationsRoute
   '/recommendations': typeof ConsoleRecommendationsRoute
   '/regulations': typeof ConsoleRegulationsRoute
+  '/business/clients': typeof ConsoleBusinessClientsRoute
   '/business/dispatch': typeof ConsoleBusinessDispatchRoute
   '/sites/$id': typeof ConsoleSitesIdRoute
   '/business': typeof ConsoleBusinessIndexRoute
@@ -170,6 +186,7 @@ export interface FileRoutesById {
   '/_console': typeof ConsoleRouteWithChildren
   '/auth': typeof AuthRoute
   '/onboarding': typeof OnboardingRoute
+  '/_console/account': typeof ConsoleAccountRoute
   '/_console/battery': typeof ConsoleBatteryRoute
   '/_console/dashboard': typeof ConsoleDashboardRoute
   '/_console/finance': typeof ConsoleFinanceRoute
@@ -181,6 +198,7 @@ export interface FileRoutesById {
   '/_console/operations': typeof ConsoleOperationsRoute
   '/_console/recommendations': typeof ConsoleRecommendationsRoute
   '/_console/regulations': typeof ConsoleRegulationsRoute
+  '/_console/business/clients': typeof ConsoleBusinessClientsRoute
   '/_console/business/dispatch': typeof ConsoleBusinessDispatchRoute
   '/_console/sites/$id': typeof ConsoleSitesIdRoute
   '/_console/business/': typeof ConsoleBusinessIndexRoute
@@ -192,6 +210,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/onboarding'
+    | '/account'
     | '/battery'
     | '/dashboard'
     | '/finance'
@@ -203,6 +222,7 @@ export interface FileRouteTypes {
     | '/operations'
     | '/recommendations'
     | '/regulations'
+    | '/business/clients'
     | '/business/dispatch'
     | '/sites/$id'
     | '/business/'
@@ -212,6 +232,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/onboarding'
+    | '/account'
     | '/battery'
     | '/dashboard'
     | '/finance'
@@ -223,6 +244,7 @@ export interface FileRouteTypes {
     | '/operations'
     | '/recommendations'
     | '/regulations'
+    | '/business/clients'
     | '/business/dispatch'
     | '/sites/$id'
     | '/business'
@@ -233,6 +255,7 @@ export interface FileRouteTypes {
     | '/_console'
     | '/auth'
     | '/onboarding'
+    | '/_console/account'
     | '/_console/battery'
     | '/_console/dashboard'
     | '/_console/finance'
@@ -244,6 +267,7 @@ export interface FileRouteTypes {
     | '/_console/operations'
     | '/_console/recommendations'
     | '/_console/regulations'
+    | '/_console/business/clients'
     | '/_console/business/dispatch'
     | '/_console/sites/$id'
     | '/_console/business/'
@@ -286,6 +310,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/onboarding'
       preLoaderRoute: typeof OnboardingRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_console/account': {
+      id: '/_console/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof ConsoleAccountRouteImport
+      parentRoute: typeof ConsoleRoute
     }
     '/_console/battery': {
       id: '/_console/battery'
@@ -371,6 +402,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConsoleBusinessIndexRouteImport
       parentRoute: typeof ConsoleRoute
     }
+    '/_console/business/clients': {
+      id: '/_console/business/clients'
+      path: '/business/clients'
+      fullPath: '/business/clients'
+      preLoaderRoute: typeof ConsoleBusinessClientsRouteImport
+      parentRoute: typeof ConsoleRoute
+    }
     '/_console/business/dispatch': {
       id: '/_console/business/dispatch'
       path: '/business/dispatch'
@@ -396,6 +434,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface ConsoleRouteChildren {
+  ConsoleAccountRoute: typeof ConsoleAccountRoute
   ConsoleBatteryRoute: typeof ConsoleBatteryRoute
   ConsoleDashboardRoute: typeof ConsoleDashboardRoute
   ConsoleFinanceRoute: typeof ConsoleFinanceRoute
@@ -407,6 +446,7 @@ interface ConsoleRouteChildren {
   ConsoleOperationsRoute: typeof ConsoleOperationsRoute
   ConsoleRecommendationsRoute: typeof ConsoleRecommendationsRoute
   ConsoleRegulationsRoute: typeof ConsoleRegulationsRoute
+  ConsoleBusinessClientsRoute: typeof ConsoleBusinessClientsRoute
   ConsoleBusinessDispatchRoute: typeof ConsoleBusinessDispatchRoute
   ConsoleSitesIdRoute: typeof ConsoleSitesIdRoute
   ConsoleBusinessIndexRoute: typeof ConsoleBusinessIndexRoute
@@ -414,6 +454,7 @@ interface ConsoleRouteChildren {
 }
 
 const ConsoleRouteChildren: ConsoleRouteChildren = {
+  ConsoleAccountRoute: ConsoleAccountRoute,
   ConsoleBatteryRoute: ConsoleBatteryRoute,
   ConsoleDashboardRoute: ConsoleDashboardRoute,
   ConsoleFinanceRoute: ConsoleFinanceRoute,
@@ -425,6 +466,7 @@ const ConsoleRouteChildren: ConsoleRouteChildren = {
   ConsoleOperationsRoute: ConsoleOperationsRoute,
   ConsoleRecommendationsRoute: ConsoleRecommendationsRoute,
   ConsoleRegulationsRoute: ConsoleRegulationsRoute,
+  ConsoleBusinessClientsRoute: ConsoleBusinessClientsRoute,
   ConsoleBusinessDispatchRoute: ConsoleBusinessDispatchRoute,
   ConsoleSitesIdRoute: ConsoleSitesIdRoute,
   ConsoleBusinessIndexRoute: ConsoleBusinessIndexRoute,

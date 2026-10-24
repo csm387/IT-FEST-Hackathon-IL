@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { loadAccount, type AccountType } from "@/lib/account";
 import { Logo } from "@/components/solar/AppShell";
-import { TypePicker } from "./auth";
+import { TypePicker } from "@/components/solar/TypePicker";
 
 export const Route = createFileRoute("/onboarding")({
   ssr: false,

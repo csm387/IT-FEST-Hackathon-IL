@@ -1,5 +1,5 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Copy } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -27,9 +27,9 @@ function AccountPage() {
   const [code, setCode] = useState("");
   const [linkedName, setLinkedName] = useState<string | null>(null);
 
-  useState(() => {
+  useEffect(() => {
     if (account.companyId) supabase.from("profiles").select("company_name").eq("id", account.companyId).maybeSingle().then(({ data }) => setLinkedName(data?.company_name ?? "Linked company"));
-  });
+  }, [account.companyId]);
 
   async function save() {
     const { error } = await supabase.from("profiles").update({ full_name: name, ...(account.role === "business" ? { company_name: company } : {}) }).eq("id", account.userId);
