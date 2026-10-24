@@ -35,7 +35,7 @@ function SiteDetail() {
   const lostKWh = Math.max(0, t.expected - t.solar);
   return (
     <div>
-      <Link to="/sites" className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"><ArrowLeft className="h-4 w-4" />Installations</Link>
+      <Link to={Route.useRouteContext().account.role === 'business' ? '/sites' : '/dashboard'} className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"><ArrowLeft className="h-4 w-4" />{Route.useRouteContext().account.role === 'business' ? 'Installations' : 'Dashboard'}</Link>
       <div className="glass relative overflow-hidden rounded-3xl">
         <img src={s.image} alt={`${s.name} installation`} className="h-64 w-full object-cover sm:h-80" />
         <div className="absolute inset-0 bg-hero-fade" />
