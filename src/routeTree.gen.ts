@@ -10,33 +10,189 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ConsoleRouteImport } from './routes/_console'
+import { Route as ConsoleBatteryRouteImport } from './routes/_console/battery'
+import { Route as ConsoleDashboardRouteImport } from './routes/_console/dashboard'
+import { Route as ConsoleFinanceRouteImport } from './routes/_console/finance'
+import { Route as ConsoleFlowRouteImport } from './routes/_console/flow'
+import { Route as ConsoleForecastRouteImport } from './routes/_console/forecast'
+import { Route as ConsoleMapRouteImport } from './routes/_console/map'
+import { Route as ConsoleNotificationsRouteImport } from './routes/_console/notifications'
+import { Route as ConsoleOperationsRouteImport } from './routes/_console/operations'
+import { Route as ConsoleRecommendationsRouteImport } from './routes/_console/recommendations'
+import { Route as ConsoleRegulationsRouteImport } from './routes/_console/regulations'
+import { Route as ConsoleSitesIndexRouteImport } from './routes/_console/sites.index'
+import { Route as ConsoleSitesIdRouteImport } from './routes/_console/sites.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ConsoleRoute = ConsoleRouteImport.update({
+  id: '/_console',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConsoleBatteryRoute = ConsoleBatteryRouteImport.update({
+  id: '/battery',
+  path: '/battery',
+  getParentRoute: () => ConsoleRoute,
+} as any)
+const ConsoleDashboardRoute = ConsoleDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => ConsoleRoute,
+} as any)
+const ConsoleFinanceRoute = ConsoleFinanceRouteImport.update({
+  id: '/finance',
+  path: '/finance',
+  getParentRoute: () => ConsoleRoute,
+} as any)
+const ConsoleFlowRoute = ConsoleFlowRouteImport.update({
+  id: '/flow',
+  path: '/flow',
+  getParentRoute: () => ConsoleRoute,
+} as any)
+const ConsoleForecastRoute = ConsoleForecastRouteImport.update({
+  id: '/forecast',
+  path: '/forecast',
+  getParentRoute: () => ConsoleRoute,
+} as any)
+const ConsoleMapRoute = ConsoleMapRouteImport.update({
+  id: '/map',
+  path: '/map',
+  getParentRoute: () => ConsoleRoute,
+} as any)
+const ConsoleNotificationsRoute = ConsoleNotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => ConsoleRoute,
+} as any)
+const ConsoleOperationsRoute = ConsoleOperationsRouteImport.update({
+  id: '/operations',
+  path: '/operations',
+  getParentRoute: () => ConsoleRoute,
+} as any)
+const ConsoleRecommendationsRoute = ConsoleRecommendationsRouteImport.update({
+  id: '/recommendations',
+  path: '/recommendations',
+  getParentRoute: () => ConsoleRoute,
+} as any)
+const ConsoleRegulationsRoute = ConsoleRegulationsRouteImport.update({
+  id: '/regulations',
+  path: '/regulations',
+  getParentRoute: () => ConsoleRoute,
+} as any)
+const ConsoleSitesIndexRoute = ConsoleSitesIndexRouteImport.update({
+  id: '/sites/',
+  path: '/sites/',
+  getParentRoute: () => ConsoleRoute,
+} as any)
+const ConsoleSitesIdRoute = ConsoleSitesIdRouteImport.update({
+  id: '/sites/$id',
+  path: '/sites/$id',
+  getParentRoute: () => ConsoleRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/battery': typeof ConsoleBatteryRoute
+  '/dashboard': typeof ConsoleDashboardRoute
+  '/finance': typeof ConsoleFinanceRoute
+  '/flow': typeof ConsoleFlowRoute
+  '/forecast': typeof ConsoleForecastRoute
+  '/map': typeof ConsoleMapRoute
+  '/notifications': typeof ConsoleNotificationsRoute
+  '/operations': typeof ConsoleOperationsRoute
+  '/recommendations': typeof ConsoleRecommendationsRoute
+  '/regulations': typeof ConsoleRegulationsRoute
+  '/sites/$id': typeof ConsoleSitesIdRoute
+  '/sites/': typeof ConsoleSitesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/battery': typeof ConsoleBatteryRoute
+  '/dashboard': typeof ConsoleDashboardRoute
+  '/finance': typeof ConsoleFinanceRoute
+  '/flow': typeof ConsoleFlowRoute
+  '/forecast': typeof ConsoleForecastRoute
+  '/map': typeof ConsoleMapRoute
+  '/notifications': typeof ConsoleNotificationsRoute
+  '/operations': typeof ConsoleOperationsRoute
+  '/recommendations': typeof ConsoleRecommendationsRoute
+  '/regulations': typeof ConsoleRegulationsRoute
+  '/sites/$id': typeof ConsoleSitesIdRoute
+  '/sites': typeof ConsoleSitesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_console': typeof ConsoleRouteWithChildren
+  '/_console/battery': typeof ConsoleBatteryRoute
+  '/_console/dashboard': typeof ConsoleDashboardRoute
+  '/_console/finance': typeof ConsoleFinanceRoute
+  '/_console/flow': typeof ConsoleFlowRoute
+  '/_console/forecast': typeof ConsoleForecastRoute
+  '/_console/map': typeof ConsoleMapRoute
+  '/_console/notifications': typeof ConsoleNotificationsRoute
+  '/_console/operations': typeof ConsoleOperationsRoute
+  '/_console/recommendations': typeof ConsoleRecommendationsRoute
+  '/_console/regulations': typeof ConsoleRegulationsRoute
+  '/_console/sites/$id': typeof ConsoleSitesIdRoute
+  '/_console/sites/': typeof ConsoleSitesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/battery'
+    | '/dashboard'
+    | '/finance'
+    | '/flow'
+    | '/forecast'
+    | '/map'
+    | '/notifications'
+    | '/operations'
+    | '/recommendations'
+    | '/regulations'
+    | '/sites/$id'
+    | '/sites/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/battery'
+    | '/dashboard'
+    | '/finance'
+    | '/flow'
+    | '/forecast'
+    | '/map'
+    | '/notifications'
+    | '/operations'
+    | '/recommendations'
+    | '/regulations'
+    | '/sites/$id'
+    | '/sites'
+  id:
+    | '__root__'
+    | '/'
+    | '/_console'
+    | '/_console/battery'
+    | '/_console/dashboard'
+    | '/_console/finance'
+    | '/_console/flow'
+    | '/_console/forecast'
+    | '/_console/map'
+    | '/_console/notifications'
+    | '/_console/operations'
+    | '/_console/recommendations'
+    | '/_console/regulations'
+    | '/_console/sites/$id'
+    | '/_console/sites/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ConsoleRoute: typeof ConsoleRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +204,136 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_console': {
+      id: '/_console'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof ConsoleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_console/battery': {
+      id: '/_console/battery'
+      path: '/battery'
+      fullPath: '/battery'
+      preLoaderRoute: typeof ConsoleBatteryRouteImport
+      parentRoute: typeof ConsoleRoute
+    }
+    '/_console/dashboard': {
+      id: '/_console/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof ConsoleDashboardRouteImport
+      parentRoute: typeof ConsoleRoute
+    }
+    '/_console/finance': {
+      id: '/_console/finance'
+      path: '/finance'
+      fullPath: '/finance'
+      preLoaderRoute: typeof ConsoleFinanceRouteImport
+      parentRoute: typeof ConsoleRoute
+    }
+    '/_console/flow': {
+      id: '/_console/flow'
+      path: '/flow'
+      fullPath: '/flow'
+      preLoaderRoute: typeof ConsoleFlowRouteImport
+      parentRoute: typeof ConsoleRoute
+    }
+    '/_console/forecast': {
+      id: '/_console/forecast'
+      path: '/forecast'
+      fullPath: '/forecast'
+      preLoaderRoute: typeof ConsoleForecastRouteImport
+      parentRoute: typeof ConsoleRoute
+    }
+    '/_console/map': {
+      id: '/_console/map'
+      path: '/map'
+      fullPath: '/map'
+      preLoaderRoute: typeof ConsoleMapRouteImport
+      parentRoute: typeof ConsoleRoute
+    }
+    '/_console/notifications': {
+      id: '/_console/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof ConsoleNotificationsRouteImport
+      parentRoute: typeof ConsoleRoute
+    }
+    '/_console/operations': {
+      id: '/_console/operations'
+      path: '/operations'
+      fullPath: '/operations'
+      preLoaderRoute: typeof ConsoleOperationsRouteImport
+      parentRoute: typeof ConsoleRoute
+    }
+    '/_console/recommendations': {
+      id: '/_console/recommendations'
+      path: '/recommendations'
+      fullPath: '/recommendations'
+      preLoaderRoute: typeof ConsoleRecommendationsRouteImport
+      parentRoute: typeof ConsoleRoute
+    }
+    '/_console/regulations': {
+      id: '/_console/regulations'
+      path: '/regulations'
+      fullPath: '/regulations'
+      preLoaderRoute: typeof ConsoleRegulationsRouteImport
+      parentRoute: typeof ConsoleRoute
+    }
+    '/_console/sites/': {
+      id: '/_console/sites/'
+      path: '/sites'
+      fullPath: '/sites/'
+      preLoaderRoute: typeof ConsoleSitesIndexRouteImport
+      parentRoute: typeof ConsoleRoute
+    }
+    '/_console/sites/$id': {
+      id: '/_console/sites/$id'
+      path: '/sites/$id'
+      fullPath: '/sites/$id'
+      preLoaderRoute: typeof ConsoleSitesIdRouteImport
+      parentRoute: typeof ConsoleRoute
+    }
   }
 }
 
+interface ConsoleRouteChildren {
+  ConsoleBatteryRoute: typeof ConsoleBatteryRoute
+  ConsoleDashboardRoute: typeof ConsoleDashboardRoute
+  ConsoleFinanceRoute: typeof ConsoleFinanceRoute
+  ConsoleFlowRoute: typeof ConsoleFlowRoute
+  ConsoleForecastRoute: typeof ConsoleForecastRoute
+  ConsoleMapRoute: typeof ConsoleMapRoute
+  ConsoleNotificationsRoute: typeof ConsoleNotificationsRoute
+  ConsoleOperationsRoute: typeof ConsoleOperationsRoute
+  ConsoleRecommendationsRoute: typeof ConsoleRecommendationsRoute
+  ConsoleRegulationsRoute: typeof ConsoleRegulationsRoute
+  ConsoleSitesIdRoute: typeof ConsoleSitesIdRoute
+  ConsoleSitesIndexRoute: typeof ConsoleSitesIndexRoute
+}
+
+const ConsoleRouteChildren: ConsoleRouteChildren = {
+  ConsoleBatteryRoute: ConsoleBatteryRoute,
+  ConsoleDashboardRoute: ConsoleDashboardRoute,
+  ConsoleFinanceRoute: ConsoleFinanceRoute,
+  ConsoleFlowRoute: ConsoleFlowRoute,
+  ConsoleForecastRoute: ConsoleForecastRoute,
+  ConsoleMapRoute: ConsoleMapRoute,
+  ConsoleNotificationsRoute: ConsoleNotificationsRoute,
+  ConsoleOperationsRoute: ConsoleOperationsRoute,
+  ConsoleRecommendationsRoute: ConsoleRecommendationsRoute,
+  ConsoleRegulationsRoute: ConsoleRegulationsRoute,
+  ConsoleSitesIdRoute: ConsoleSitesIdRoute,
+  ConsoleSitesIndexRoute: ConsoleSitesIndexRoute,
+}
+
+const ConsoleRouteWithChildren =
+  ConsoleRoute._addFileChildren(ConsoleRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ConsoleRoute: ConsoleRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
