@@ -4,7 +4,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState, type ReactNode } from "react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useNavigate } from "@tanstack/react-router";
-import { Bell, LayoutDashboard, Map, Building2, Zap, BatteryCharging, CloudSun, Wallet, Scale, Lightbulb, Wrench, Search, CalendarClock, Users } from "lucide-react";
+import { Bell, LayoutDashboard, Map, Building2, Zap, BatteryCharging, CloudSun, Wallet, Scale, Lightbulb, Wrench, Search, CalendarClock, Users, ShieldCheck } from "lucide-react";
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useNotifications } from "./notifications";
@@ -21,6 +21,7 @@ const SPACES = {
     { title: "Recommendations", url: "/recommendations", icon: Lightbulb },
     { title: "Finance", url: "/finance", icon: Wallet },
     { title: "My maintenance", url: "/maintenance", icon: CalendarClock },
+    { title: "Insurance", url: "/insurance", icon: ShieldCheck },
     { title: "Regulations", url: "/regulations", icon: Scale },
     { title: "Notifications", url: "/notifications", icon: Bell },
   ]},
@@ -31,6 +32,7 @@ const SPACES = {
     { title: "Installations", url: "/sites", icon: Building2 },
     { title: "O&M center", url: "/operations", icon: Wrench },
     { title: "Updates & maintenance", url: "/maintenance", icon: CalendarClock },
+    { title: "Insurance", url: "/insurance", icon: ShieldCheck },
     { title: "Portfolio finance", url: "/finance", icon: Wallet },
     { title: "Notifications", url: "/notifications", icon: Bell },
   ]},
