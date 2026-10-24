@@ -34,8 +34,8 @@ function FlowPage() {
       <Panel title="Today, sources to usage" className="mb-6"><EnergySankey data={sankeyFromDay(day)} /></Panel>
       <div className="grid gap-6 lg:grid-cols-3">
         <Panel className="lg:col-span-2" title={`Hour by hour · ${p.label}`}>
-          <EnergySankey data={sankeyFromDay([p])} unit="kW" />
-          <div className="mt-4 flex items-center gap-4">
+          <p className="mb-4 text-sm text-muted-foreground">Solar <span className="num text-solar">{fmt(p.solar, 2)} kW</span> · Home <span className="num text-foreground">{fmt(p.load, 2)} kW</span> · Battery <span className="num text-battery">{Math.round(p.soc * 100)}%</span></p>
+          <div className="flex items-center gap-4">
             <span className="num w-14 text-sm">{p.label}</span>
             <Slider value={[hour]} min={0} max={23} step={1} onValueChange={(v) => setHour(v[0])} />
           </div>
