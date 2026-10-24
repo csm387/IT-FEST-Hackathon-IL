@@ -11,6 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ConsoleRouteImport } from './routes/_console'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as ConsoleBatteryRouteImport } from './routes/_console/battery'
 import { Route as ConsoleDashboardRouteImport } from './routes/_console/dashboard'
 import { Route as ConsoleFinanceRouteImport } from './routes/_console/finance'
@@ -34,6 +36,16 @@ const IndexRoute = IndexRouteImport.update({
 } as any)
 const ConsoleRoute = ConsoleRouteImport.update({
   id: '/_console',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingRoute = OnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConsoleBatteryRoute = ConsoleBatteryRouteImport.update({
@@ -114,6 +126,8 @@ const ConsoleSitesIdRoute = ConsoleSitesIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/onboarding': typeof OnboardingRoute
   '/battery': typeof ConsoleBatteryRoute
   '/dashboard': typeof ConsoleDashboardRoute
   '/finance': typeof ConsoleFinanceRoute
@@ -132,6 +146,8 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/onboarding': typeof OnboardingRoute
   '/battery': typeof ConsoleBatteryRoute
   '/dashboard': typeof ConsoleDashboardRoute
   '/finance': typeof ConsoleFinanceRoute
@@ -152,6 +168,8 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_console': typeof ConsoleRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/onboarding': typeof OnboardingRoute
   '/_console/battery': typeof ConsoleBatteryRoute
   '/_console/dashboard': typeof ConsoleDashboardRoute
   '/_console/finance': typeof ConsoleFinanceRoute
@@ -172,6 +190,8 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/auth'
+    | '/onboarding'
     | '/battery'
     | '/dashboard'
     | '/finance'
@@ -190,6 +210,8 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/auth'
+    | '/onboarding'
     | '/battery'
     | '/dashboard'
     | '/finance'
@@ -209,6 +231,8 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_console'
+    | '/auth'
+    | '/onboarding'
     | '/_console/battery'
     | '/_console/dashboard'
     | '/_console/finance'
@@ -229,6 +253,8 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ConsoleRoute: typeof ConsoleRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  OnboardingRoute: typeof OnboardingRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -245,6 +271,20 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof ConsoleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding': {
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_console/battery': {
@@ -397,6 +437,8 @@ const ConsoleRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ConsoleRoute: ConsoleRouteWithChildren,
+  AuthRoute: AuthRoute,
+  OnboardingRoute: OnboardingRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
