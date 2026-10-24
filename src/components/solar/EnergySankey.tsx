@@ -31,12 +31,12 @@ export function EnergySankey({ data, unit = "kWh" }: { data: SankeyInput; unit?:
   const homeSupply = direct + data.gridImport + data.batteryDischarge;
 
   const nodes: Node[] = [
-    { id: "solar", label: "Solar panels", value: data.solar, col: 0, color: "var(--solar)" },
-    { id: "grid", label: "Grid import", value: data.gridImport, col: 0, color: "var(--grid)" },
-    { id: "batt-out", label: "Battery", value: data.batteryDischarge, col: 0, color: "var(--battery)" },
-    { id: "home", label: "Home supply", value: homeSupply, col: 1, color: "var(--home)" },
-    { id: "batt-in", label: "Battery charge", value: data.batteryCharge, col: 1, color: "var(--battery)" },
-    { id: "export", label: "Grid export", value: data.gridExport, col: 1, color: "var(--grid)" },
+    { id: "solar", label: "Solar panels", value: data.solar, col: 0 as Col, color: "var(--solar)" },
+    { id: "grid", label: "Grid import", value: data.gridImport, col: 0 as Col, color: "var(--grid)" },
+    { id: "batt-out", label: "Battery", value: data.batteryDischarge, col: 0 as Col, color: "var(--battery)" },
+    { id: "home", label: "Home supply", value: homeSupply, col: 1 as Col, color: "var(--home)" },
+    { id: "batt-in", label: "Battery charge", value: data.batteryCharge, col: 1 as Col, color: "var(--battery)" },
+    { id: "export", label: "Grid export", value: data.gridExport, col: 1 as Col, color: "var(--grid)" },
     ...USAGE.map(([l, r]) => ({ id: l, label: l, value: homeSupply * r, col: 2 as Col, color: "var(--warning)" })),
   ].filter((n) => n.value > 0.05);
 
