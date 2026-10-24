@@ -98,6 +98,172 @@ export type Database = {
           },
         ]
       }
+      energy_bills: {
+        Row: {
+          carried_credit_in: number
+          carried_credit_out: number | null
+          closing_export: number | null
+          closing_import: number | null
+          compensation_mode: string
+          created_at: string
+          created_by: string
+          document_path: string | null
+          energy_price: number | null
+          export_compensation: number | null
+          export_kwh: number | null
+          id: string
+          import_kwh: number | null
+          meter_id: string
+          network_charges: number | null
+          opening_export: number | null
+          opening_import: number | null
+          origin: string
+          period_end: string
+          period_start: string
+          reading_type: string
+          site_id: string
+          supplier: string
+          taxes: number | null
+          total_ron: number | null
+        }
+        Insert: {
+          carried_credit_in?: number
+          carried_credit_out?: number | null
+          closing_export?: number | null
+          closing_import?: number | null
+          compensation_mode?: string
+          created_at?: string
+          created_by: string
+          document_path?: string | null
+          energy_price?: number | null
+          export_compensation?: number | null
+          export_kwh?: number | null
+          id?: string
+          import_kwh?: number | null
+          meter_id?: string
+          network_charges?: number | null
+          opening_export?: number | null
+          opening_import?: number | null
+          origin?: string
+          period_end: string
+          period_start: string
+          reading_type?: string
+          site_id: string
+          supplier?: string
+          taxes?: number | null
+          total_ron?: number | null
+        }
+        Update: {
+          carried_credit_in?: number
+          carried_credit_out?: number | null
+          closing_export?: number | null
+          closing_import?: number | null
+          compensation_mode?: string
+          created_at?: string
+          created_by?: string
+          document_path?: string | null
+          energy_price?: number | null
+          export_compensation?: number | null
+          export_kwh?: number | null
+          id?: string
+          import_kwh?: number | null
+          meter_id?: string
+          network_charges?: number | null
+          opening_export?: number | null
+          opening_import?: number | null
+          origin?: string
+          period_end?: string
+          period_start?: string
+          reading_type?: string
+          site_id?: string
+          supplier?: string
+          taxes?: number | null
+          total_ron?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "energy_bills_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "sites"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      energy_measurements: {
+        Row: {
+          accuracy_pct: number
+          battery_charge_kwh: number | null
+          battery_coupling: string | null
+          battery_discharge_kwh: number | null
+          boundary: string
+          consumption_kwh: number | null
+          created_at: string
+          created_by: string
+          export_kwh: number | null
+          id: string
+          import_kwh: number | null
+          origin: string
+          period_end: string
+          period_start: string
+          pv_kwh: number | null
+          site_id: string
+          source: string
+          synced_at: string | null
+          timezone: string
+        }
+        Insert: {
+          accuracy_pct?: number
+          battery_charge_kwh?: number | null
+          battery_coupling?: string | null
+          battery_discharge_kwh?: number | null
+          boundary?: string
+          consumption_kwh?: number | null
+          created_at?: string
+          created_by: string
+          export_kwh?: number | null
+          id?: string
+          import_kwh?: number | null
+          origin?: string
+          period_end: string
+          period_start: string
+          pv_kwh?: number | null
+          site_id: string
+          source: string
+          synced_at?: string | null
+          timezone?: string
+        }
+        Update: {
+          accuracy_pct?: number
+          battery_charge_kwh?: number | null
+          battery_coupling?: string | null
+          battery_discharge_kwh?: number | null
+          boundary?: string
+          consumption_kwh?: number | null
+          created_at?: string
+          created_by?: string
+          export_kwh?: number | null
+          id?: string
+          import_kwh?: number | null
+          origin?: string
+          period_end?: string
+          period_start?: string
+          pv_kwh?: number | null
+          site_id?: string
+          source?: string
+          synced_at?: string | null
+          timezone?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "energy_measurements_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "sites"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       insurance_claims: {
         Row: {
           affected_equipment: string[]
@@ -429,6 +595,7 @@ export type Database = {
       }
       link_company: { Args: { _code: string }; Returns: string }
       my_company_id: { Args: never; Returns: string }
+      seed_energy_demo: { Args: { _site: string }; Returns: undefined }
     }
     Enums: {
       account_type: "individual" | "business"
