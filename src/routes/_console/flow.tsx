@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { EnergyFlow } from "@/components/solar/EnergyFlow";
+import { EnergySankey, sankeyFromDay } from "@/components/solar/EnergySankey";
 import { PageHeader, Panel, fmt } from "@/components/solar/ui";
 import { homeSite, siteDay } from "@/lib/fleet";
 import { computeFlows } from "@/lib/energy";
@@ -30,11 +30,12 @@ function FlowPage() {
   ] as const;
   return (
     <div>
-      <PageHeader title="Live energy flow" subtitle="Drag the timeline to replay today. Values in kW, AC side; battery conversion loss 5%." />
+      <PageHeader title="Live energy flow" subtitle="Where today's energy came from and where it went. Usage split is estimated until sub-meters are connected." />
+      <Panel title="Today, sources to usage" className="mb-6"><EnergySankey data={sankeyFromDay(day)} /></Panel>
       <div className="grid gap-6 lg:grid-cols-3">
-        <Panel className="lg:col-span-2">
-          <div className="mx-auto aspect-[4/3] max-w-2xl"><EnergyFlow flows={f} solarKW={p.solar} loadKW={p.load} soc={p.soc} hasBattery={site.batteryKWh > 0} /></div>
-          <div className="mt-4 flex items-center gap-4">
+        <Panel className="lg:col-span-2" title={`Hour by hour · ${p.label}`}>
+          <p className="mb-4 text-sm text-muted-foreground">Solar <span className="num text-solar">{fmt(p.solar, 2)} kW</span> · Home <span className="num text-foreground">{fmt(p.load, 2)} kW</span> · Battery <span className="num text-battery">{Math.round(p.soc * 100)}%</span></p>
+          <div className="flex items-center gap-4">
             <span className="num w-14 text-sm">{p.label}</span>
             <Slider value={[hour]} min={0} max={23} step={1} onValueChange={(v) => setHour(v[0])} />
           </div>

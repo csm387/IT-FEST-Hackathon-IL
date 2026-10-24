@@ -42,7 +42,7 @@ export type Tone = keyof typeof tones;
 
 export function Kpi({ icon: Icon, label, value, unit, tone = "solar", hint, estimate }: { icon: LucideIcon; label: string; value: string | number; unit?: string; tone?: Tone; hint?: string; estimate?: boolean }) {
   return (
-    <div className="glass group rounded-2xl p-4 transition hover:-translate-y-0.5 hover:border-primary/30">
+    <div className="glass group rounded-2xl p-4">
       <div className="flex items-center justify-between">
         <span className={cn("grid h-9 w-9 place-items-center rounded-xl", tones[tone])}><Icon className="h-4 w-4" /></span>
         {estimate && <span className="rounded-full border border-border px-2 py-0.5 text-[10px] uppercase tracking-wider text-muted-foreground">Estimate</span>}

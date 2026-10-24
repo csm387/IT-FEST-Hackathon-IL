@@ -28,7 +28,7 @@ export default function FleetMap({ sites, onOpen }: { sites: Site[]; onOpen: (id
     const g = layer.current; if (!g) return;
     g.clearLayers();
     sites.forEach((s) => {
-      const icon = L.divIcon({ className: "", iconSize: [18, 18], html: `<span style="display:block;width:18px;height:18px;border-radius:999px;background:${COLORS[s.status]};border:3px solid var(--background);box-shadow:0 0 14px ${COLORS[s.status]}"></span>` });
+      const icon = L.divIcon({ className: "", iconSize: [18, 18], html: `<span style="display:block;width:18px;height:18px;border-radius:999px;background:${COLORS[s.status]};border:3px solid var(--background)"></span>` });
       const t = sumDay(siteDay(s));
       const now = siteDay(s)[13];
       const html = `
