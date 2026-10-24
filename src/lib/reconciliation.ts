@@ -324,7 +324,7 @@ export function isPersistent(history: { result: ReconResult }[]) {
 }
 
 /** Notifications only for sufficient evidence; normal measurement differences stay silent. */
-export function reconAlerts(siteName: string, history: { periodStart: string; result: ReconResult }[]) {
+export function reconAlerts(siteName: string, history: { periodStart: string; result: ReconResult; bill?: Bill | null }[]) {
   const latest = history[0];
   if (!latest) return [];
   const month = new Date(`${latest.periodStart}T00:00:00Z`).toLocaleString('en-GB', { month: 'long', year: 'numeric', timeZone: 'UTC' });
