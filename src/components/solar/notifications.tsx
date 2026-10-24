@@ -3,6 +3,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { siteDay } from '@/lib/fleet';
 import { shouldNotifySurplus } from '@/lib/energy';
+import { dueReminders } from '@/lib/insurance';
 import { useWorkspace } from './WorkspaceProvider';
 import { useSavedSetting } from '@/hooks/use-saved-setting';
 import { supabase } from '@/integrations/supabase/client';
@@ -10,13 +11,13 @@ import type { Json } from '@/integrations/supabase/types';
 
 export type Priority = 'info' | 'opportunity' | 'warning' | 'critical';
 export interface Note { id: string; title: string; body: string; priority: Priority; time: string; read: boolean; kind: 'actual' | 'forecast' | 'system'; key: string }
-export interface Prefs { surplus: boolean; battery: boolean; peak: boolean; faults: boolean; push: boolean; quietStart: number; quietEnd: number; thresholdKW: number }
-const defaultPrefs: Prefs = { surplus: true, battery: true, peak: true, faults: true, push: false, quietStart: 22, quietEnd: 7, thresholdKW: 2 };
+export interface Prefs { surplus: boolean; battery: boolean; peak: boolean; faults: boolean; insurance: boolean; push: boolean; quietStart: number; quietEnd: number; thresholdKW: number }
+const defaultPrefs: Prefs = { surplus: true, battery: true, peak: true, faults: true, insurance: true, push: false, quietStart: 22, quietEnd: 7, thresholdKW: 2 };
 interface Ctx { notes: Note[]; prefs: Prefs; setPrefs: (p: Prefs) => void; markAll: () => void; markRead: (id: string) => void; push: (n: Omit<Note, 'id' | 'time' | 'read'>) => void; unread: number }
 const NotificationsCtx = createContext<Ctx | null>(null);
 
 export function NotificationsProvider({ userId, children }: { userId: string; children: ReactNode }) {
-  const { home } = useWorkspace();
+  const { home, sites, policies } = useWorkspace();
   const client = useQueryClient();
   const queryKey = useMemo(() => ['notifications', userId], [userId]);
   const [prefs, setPrefs] = useSavedSetting(userId, 'prefs', defaultPrefs);
@@ -58,6 +59,28 @@ export function NotificationsProvider({ userId, children }: { userId: string; ch
     }, 45000);
     return () => clearInterval(id);
   }, [prefs, push, home]);
+  // Insurance expiry reminders: checked on load and daily; each threshold sends once per policy.
+  useEffect(() => {
+    if (!prefs.insurance) return;
+    const check = () => {
+      const today = new Date().toISOString().slice(0, 10);
+      for (const policy of policies) {
+        const site = sites.find(s => s.id === policy.siteId);
+        for (const r of dueReminders(policy, today)) {
+          push({
+            key: r.key, kind: 'system', priority: r.daysLeft <= 7 ? 'warning' : 'info',
+            title: r.daysLeft === 0 ? '🛡️ Insurance expires today' : '🛡️ Insurance expiring soon',
+            body: r.daysLeft === 0
+              ? `The insurance policy for ${site?.name ?? 'your installation'} in ${site?.city ?? ''} expires today. Renew it to avoid a coverage gap.`
+              : `Your solar installation ${site?.name ?? ''} in ${site?.city ?? ''} has ${r.daysLeft} days remaining on its insurance policy. Renew it to avoid a potential coverage gap.`,
+          });
+        }
+      }
+    };
+    check();
+    const id = setInterval(check, 6 * 3600000);
+    return () => clearInterval(id);
+  }, [prefs.insurance, policies, sites, push]);
   return <NotificationsCtx.Provider value={{ notes, prefs, setPrefs, push, unread: notes.filter(n => !n.read).length, markAll: () => { void mark(); }, markRead: id => { void mark(id); } }}>{children}</NotificationsCtx.Provider>;
 }
 export function useNotifications() {
