@@ -16,6 +16,8 @@ import { Route as ConsoleDashboardRouteImport } from './routes/_console/dashboar
 import { Route as ConsoleFlowRouteImport } from './routes/_console/flow'
 import { Route as ConsoleForecastRouteImport } from './routes/_console/forecast'
 import { Route as ConsoleMapRouteImport } from './routes/_console/map'
+import { Route as ConsoleSitesIndexRouteImport } from './routes/_console/sites.index'
+import { Route as ConsoleSitesIdRouteImport } from './routes/_console/sites.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -51,6 +53,16 @@ const ConsoleMapRoute = ConsoleMapRouteImport.update({
   path: '/map',
   getParentRoute: () => ConsoleRoute,
 } as any)
+const ConsoleSitesIndexRoute = ConsoleSitesIndexRouteImport.update({
+  id: '/sites/',
+  path: '/sites/',
+  getParentRoute: () => ConsoleRoute,
+} as any)
+const ConsoleSitesIdRoute = ConsoleSitesIdRouteImport.update({
+  id: '/sites/$id',
+  path: '/sites/$id',
+  getParentRoute: () => ConsoleRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -59,6 +71,8 @@ export interface FileRoutesByFullPath {
   '/flow': typeof ConsoleFlowRoute
   '/forecast': typeof ConsoleForecastRoute
   '/map': typeof ConsoleMapRoute
+  '/sites/$id': typeof ConsoleSitesIdRoute
+  '/sites/': typeof ConsoleSitesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -67,6 +81,8 @@ export interface FileRoutesByTo {
   '/flow': typeof ConsoleFlowRoute
   '/forecast': typeof ConsoleForecastRoute
   '/map': typeof ConsoleMapRoute
+  '/sites/$id': typeof ConsoleSitesIdRoute
+  '/sites': typeof ConsoleSitesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -77,12 +93,30 @@ export interface FileRoutesById {
   '/_console/flow': typeof ConsoleFlowRoute
   '/_console/forecast': typeof ConsoleForecastRoute
   '/_console/map': typeof ConsoleMapRoute
+  '/_console/sites/$id': typeof ConsoleSitesIdRoute
+  '/_console/sites/': typeof ConsoleSitesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/battery' | '/dashboard' | '/flow' | '/forecast' | '/map'
+  fullPaths:
+    | '/'
+    | '/battery'
+    | '/dashboard'
+    | '/flow'
+    | '/forecast'
+    | '/map'
+    | '/sites/$id'
+    | '/sites/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/battery' | '/dashboard' | '/flow' | '/forecast' | '/map'
+  to:
+    | '/'
+    | '/battery'
+    | '/dashboard'
+    | '/flow'
+    | '/forecast'
+    | '/map'
+    | '/sites/$id'
+    | '/sites'
   id:
     | '__root__'
     | '/'
@@ -92,6 +126,8 @@ export interface FileRouteTypes {
     | '/_console/flow'
     | '/_console/forecast'
     | '/_console/map'
+    | '/_console/sites/$id'
+    | '/_console/sites/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -150,6 +186,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConsoleMapRouteImport
       parentRoute: typeof ConsoleRoute
     }
+    '/_console/sites/': {
+      id: '/_console/sites/'
+      path: '/sites'
+      fullPath: '/sites/'
+      preLoaderRoute: typeof ConsoleSitesIndexRouteImport
+      parentRoute: typeof ConsoleRoute
+    }
+    '/_console/sites/$id': {
+      id: '/_console/sites/$id'
+      path: '/sites/$id'
+      fullPath: '/sites/$id'
+      preLoaderRoute: typeof ConsoleSitesIdRouteImport
+      parentRoute: typeof ConsoleRoute
+    }
   }
 }
 
@@ -159,6 +209,8 @@ interface ConsoleRouteChildren {
   ConsoleFlowRoute: typeof ConsoleFlowRoute
   ConsoleForecastRoute: typeof ConsoleForecastRoute
   ConsoleMapRoute: typeof ConsoleMapRoute
+  ConsoleSitesIdRoute: typeof ConsoleSitesIdRoute
+  ConsoleSitesIndexRoute: typeof ConsoleSitesIndexRoute
 }
 
 const ConsoleRouteChildren: ConsoleRouteChildren = {
@@ -167,6 +219,8 @@ const ConsoleRouteChildren: ConsoleRouteChildren = {
   ConsoleFlowRoute: ConsoleFlowRoute,
   ConsoleForecastRoute: ConsoleForecastRoute,
   ConsoleMapRoute: ConsoleMapRoute,
+  ConsoleSitesIdRoute: ConsoleSitesIdRoute,
+  ConsoleSitesIndexRoute: ConsoleSitesIndexRoute,
 }
 
 const ConsoleRouteWithChildren =
