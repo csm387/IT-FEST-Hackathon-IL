@@ -50,6 +50,13 @@
       "when": 1792853955776,
       "tag": "0006_add_policy_documents",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1792853980361,
+      "tag": "0007_insurance_docs_storage_policies",
+      "breakpoints": true
     }
   ]
 }
