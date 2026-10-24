@@ -1,10 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { ChevronLeft, ChevronRight, Play, Pause, Sun, Moon, CloudSun, Check } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { EnergySankey, sankeyFromDay } from "@/components/solar/EnergySankey";
 import { PageHeader, Panel, fmt } from "@/components/solar/ui";
 import { homeSite, siteDay } from "@/lib/fleet";
 import { computeFlows } from "@/lib/energy";
-import { Slider } from "@/components/ui/slider";
 
 export const Route = createFileRoute("/_console/flow")({
   head: () => ({ meta: [
