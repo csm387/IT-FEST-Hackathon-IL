@@ -25,7 +25,8 @@ function BatteryPage() {
   const { sites: savedSites } = useWorkspace();
   const sites = savedSites.filter((s) => s.batteryKWh > 0);
   const [id, setId] = useState(sites[0].id);
-  const site = sites.find((s) => s.id === id)!;
+  const site = sites.find((s) => s.id === id) ?? sites[0];
+  if (!site) throw new Error("No saved installation is available.");
   const day = useMemo(() => siteDay(site), [site]);
   const [hour, setHour] = useState(11);
   const [live, setLive] = useState(true);

@@ -23,9 +23,9 @@ function SitesPage() {
   const [q, setQ] = useState("");
   const [cmp, setCmp] = useState<string[]>([]);
   const list = sites.filter((s) => `${s.name} ${s.city} ${s.manufacturer}`.toLowerCase().includes(q.toLowerCase()));
-  const chart = useMemo(() => cmp.map((id) => {
-    const s = sites.find((x) => x.id === id)!; const t = sumDay(siteDay(s));
-    return { name: s.name, "kWh/kWp actual": +(t.solar / s.kWp).toFixed(2), "kWh/kWp expected": +(t.expected / s.kWp).toFixed(2) };
+  const chart = useMemo(() => cmp.flatMap((id) => {
+    const s = sites.find((x) => x.id === id); if (!s) return []; const t = sumDay(siteDay(s));
+    return [{ name: s.name, "kWh/kWp actual": +(t.solar / s.kWp).toFixed(2), "kWh/kWp expected": +(t.expected / s.kWp).toFixed(2) }];
   }), [cmp, sites]);
   const toggle = (id: string) => setCmp((c) => (c.includes(id) ? c.filter((x) => x !== id) : c.length < 5 ? [...c, id] : c));
 

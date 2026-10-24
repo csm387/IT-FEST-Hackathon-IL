@@ -1,6 +1,7 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 import { Copy } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { PageHeader, Panel } from "@/components/solar/ui";
@@ -22,6 +23,7 @@ const input = "h-10 w-full rounded-lg border border-border bg-background px-3 te
 function AccountPage() {
   const { account } = Route.useRouteContext();
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [name, setName] = useState(account.fullName);
   const [company, setCompany] = useState(account.companyName ?? "");
   const [code, setCode] = useState("");
@@ -39,6 +41,7 @@ function AccountPage() {
   async function link(c: string | null) {
     const { data, error } = await supabase.rpc("link_company", { _code: c ?? "" });
     if (error) { toast.error(error.message.includes("Invalid") ? "That company code doesn't exist." : error.message); return; }
+    await queryClient.invalidateQueries({ queryKey: ["workspace"] });
     setLinkedName(data ?? null); setCode(""); toast.success(c ? `Linked to ${data}` : "Company unlinked"); router.invalidate();
   }
 

@@ -28,7 +28,7 @@ function Dispatch() {
   const { jobs, crews, saveJob } = useWorkspace();
   const [selected, setSelected] = useState<string | null>(null);
   const [prio, setPrio] = useState(""); const [region, setRegion] = useState("");
-  const site = (id: string) => sites.find((s) => s.id === id)!;
+  const site = (id: string) => { const found = sites.find(s => s.id === id); if (!found) throw new Error("Installation unavailable"); return found; };
   const regions = [...new Set(sites.map((s) => s.region))].sort();
   const visible = useMemo(() => jobs.filter((j) => (!prio || j.priority === prio) && (!region || site(j.siteId).region === region)), [jobs, prio, region]);
   const mapSites = sites.filter((s) => !region || s.region === region);
