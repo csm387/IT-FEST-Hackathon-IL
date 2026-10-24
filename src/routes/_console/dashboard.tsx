@@ -3,9 +3,8 @@ import { useMemo, useState } from "react";
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { Sun, Zap, Home, BatteryCharging, ArrowDownToLine, ArrowUpFromLine, PiggyBank, Coins, Recycle, Gauge, Server, AlertTriangle } from "lucide-react";
 import { Kpi, PageHeader, Panel, Segmented, axis, chartTooltip, fmt, ron } from "@/components/solar/ui";
-import { EnergyFlow } from "@/components/solar/EnergyFlow";
+import { EnergySankey, sankeyFromDay } from "@/components/solar/EnergySankey";
 import { aggregatePeriod, getSites, homeSite, siteDay, sumDay, TARIFF, yearly, buildAlerts } from "@/lib/fleet";
-import { computeFlows } from "@/lib/energy";
 
 export const Route = createFileRoute("/_console/dashboard")({
   head: () => ({ meta: [
@@ -27,7 +26,6 @@ function Dashboard() {
   const t = sumDay(today);
   const hourNow = 13;
   const now = today[hourNow];
-  const flows = computeFlows({ solarKW: now.solar, loadKW: now.load, soc: now.soc, maxChargeKW: site.batteryMaxChargeKW, hasBattery: site.batteryKWh > 0 });
   const selfUsed = t.solar - t.export;
   const sites = getSites();
   const alerts = buildAlerts().filter((a) => a.status !== "Resolved");
@@ -62,8 +60,10 @@ function Dashboard() {
         <Kpi icon={AlertTriangle} label="Active anomalies" value={alerts.length} tone="warning" />
       </div>
 
-      <div className="mt-6 grid gap-6 xl:grid-cols-3">
-        <Panel title={`Energy overview (${unit})`} className="xl:col-span-2">
+      <Panel title="Energy flow · today" className="mt-6"><EnergySankey data={sankeyFromDay(today)} /></Panel>
+
+      <div className="mt-6">
+        <Panel title={`Energy overview (${unit})`}>
           <div className="h-80">
             <ResponsiveContainer>
               {period === "today" ? (
@@ -96,9 +96,6 @@ function Dashboard() {
               )}
             </ResponsiveContainer>
           </div>
-        </Panel>
-        <Panel title="Live energy flow · 13:00">
-          <div className="h-80"><EnergyFlow flows={flows} solarKW={now.solar} loadKW={now.load} soc={now.soc} hasBattery={site.batteryKWh > 0} /></div>
         </Panel>
       </div>
     </div>

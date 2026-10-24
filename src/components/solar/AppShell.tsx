@@ -27,7 +27,7 @@ const groups = [
 export function Logo({ compact }: { compact?: boolean }) {
   return (
     <span className="flex items-center gap-2">
-      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-gradient-primary glow-solar"><Sun className="h-4 w-4 text-primary-foreground" /></span>
+      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-primary"><Sun className="h-4 w-4 text-primary-foreground" /></span>
       {!compact && <span className="font-display text-lg font-semibold tracking-tight">Solar<span className="text-solar">Ops</span></span>}
     </span>
   );
@@ -95,7 +95,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <div className="flex min-h-screen w-full">
         <AppSidebar />
         <div className="flex min-w-0 flex-1 flex-col">
-          <header className="sticky top-0 z-[500] flex h-16 items-center gap-3 border-b border-border bg-background/70 px-4 backdrop-blur-xl">
+          <header className="sticky top-0 z-[500] flex h-16 items-center gap-3 border-b border-border bg-background px-4">
             <SidebarTrigger />
             <div className="relative hidden max-w-sm flex-1 md:block">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -107,7 +107,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                 Live · simulated data
               </span>
               <Bellmenu />
-              <span className="grid h-9 w-9 place-items-center rounded-full bg-gradient-primary text-xs font-bold text-primary-foreground">AP</span>
+              <span className="grid h-9 w-9 place-items-center rounded-full bg-secondary text-xs font-bold text-primary-foreground">AP</span>
             </div>
           </header>
           <main className="flex-1 p-4 sm:p-6 lg:p-8">{children}</main>

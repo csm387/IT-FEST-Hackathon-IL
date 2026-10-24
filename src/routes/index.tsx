@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { ArrowRight, Activity, BatteryCharging, Bell, BrainCircuit, CloudSun, Gauge, LineChart, Map, PlugZap, ShieldCheck, Wallet, Wrench, Zap, Scale, Mail, Phone } from "lucide-react";
 import { Logo } from "@/components/solar/AppShell";
-import { EnergyFlow } from "@/components/solar/EnergyFlow";
+import { EnergySankey } from "@/components/solar/EnergySankey";
 import { IMAGES } from "@/lib/fleet";
 
 const HERO = "https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=1920&q=75";
@@ -59,7 +59,7 @@ function Landing() {
           <div className="hidden gap-6 text-sm text-muted-foreground md:flex">
             <a href="#how" className="hover:text-foreground">How it works</a><a href="#features" className="hover:text-foreground">Features</a><a href="#om" className="hover:text-foreground">O&M</a><a href="#why" className="hover:text-foreground">Why SolarOps</a>
           </div>
-          <Link to="/dashboard" className="rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground glow-solar">Open app</Link>
+          <Link to="/dashboard" className="rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground">Open app</Link>
         </div>
       </nav>
 
@@ -69,10 +69,10 @@ function Landing() {
         <div className="relative mx-auto grid max-w-7xl gap-12 px-4 pb-24 pt-24 sm:px-6 lg:grid-cols-2 lg:pt-32">
           <div>
             <span className="inline-flex items-center gap-2 rounded-full border border-border bg-background/50 px-3 py-1 text-xs text-muted-foreground backdrop-blur"><span className="h-1.5 w-1.5 rounded-full bg-solar" />Every Watt Matters</span>
-            <h1 className="mt-6 text-5xl font-semibold leading-[1.05] sm:text-6xl">Your Energy.<br /><span className="text-gradient">One Intelligent View.</span></h1>
+            <h1 className="mt-6 text-5xl font-semibold leading-[1.05] sm:text-6xl">Your Energy.<br /><span className="text-solar">One Intelligent View.</span></h1>
             <p className="mt-6 max-w-xl text-lg text-muted-foreground">Monitor solar production, battery storage, energy consumption, and system health in real time. Turn energy data into smarter decisions.</p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link to="/dashboard" className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 font-semibold text-primary-foreground glow-solar">Explore Dashboard<ArrowRight className="h-4 w-4" /></Link>
+              <Link to="/dashboard" className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 font-semibold text-primary-foreground">Explore Dashboard<ArrowRight className="h-4 w-4" /></Link>
               <a href="#how" className="rounded-xl border border-border bg-background/40 px-5 py-3 font-semibold backdrop-blur hover:bg-accent">How It Works</a>
             </div>
             <div className="mt-12 grid max-w-lg grid-cols-3 gap-6">
@@ -83,9 +83,7 @@ function Landing() {
           </div>
           <div className="glass rounded-3xl p-5">
             <div className="flex items-center justify-between text-xs text-muted-foreground"><span>Live · Casa Cluj 2</span><span className="num">13:00</span></div>
-            <div className="mx-auto aspect-[4/3] max-w-md">
-              <EnergyFlow flows={{ solarToHome: 1.6, solarToBattery: 2.4, solarToGrid: 1.2, batteryToHome: 0, gridToHome: 0, gridToBattery: 0, batteryToGrid: 0 }} solarKW={5.2} loadKW={1.6} soc={0.72} hasBattery />
-            </div>
+            <div className="py-4"><EnergySankey data={{ solar: 31.4, gridImport: 4.1, batteryDischarge: 5.2, batteryCharge: 7.8, gridExport: 9.3, load: 23.6 }} /></div>
             <div className="grid grid-cols-3 gap-2 text-center text-xs">
               <div className="rounded-xl bg-background/40 p-2"><p className="text-muted-foreground">Today</p><p className="num text-base text-solar">31.4 kWh</p></div>
               <div className="rounded-xl bg-background/40 p-2"><p className="text-muted-foreground">Saved</p><p className="num text-base">38 RON</p></div>
