@@ -29,7 +29,7 @@ function NotesPage() {
     }
     setPrefs({ ...prefs, push: v });
   };
-  const toggles: [keyof typeof prefs, string][] = [["surplus", "Solar surplus opportunities"], ["battery", "Battery almost full / not charging"], ["peak", "Production peaks & price windows"], ["faults", "Faults, offline & maintenance"]];
+  const toggles: [keyof typeof prefs, string][] = [["surplus", "Solar surplus opportunities"], ["battery", "Battery almost full / not charging"], ["peak", "Production peaks & price windows"], ["faults", "Faults, offline & maintenance"], ["insurance", "Insurance expiry reminders"]];
   return (
     <div>
       <PageHeader title="Notification center" actions={<>

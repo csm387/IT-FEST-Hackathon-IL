@@ -1,0 +1,4 @@
+CREATE POLICY "Read insurance docs on visible sites" ON storage.objects FOR SELECT TO authenticated USING (bucket_id = 'insurance-docs' AND can_read_site((storage.foldername(name))[1]::uuid));
+CREATE POLICY "Upload insurance docs on visible sites" ON storage.objects FOR INSERT TO authenticated WITH CHECK (bucket_id = 'insurance-docs' AND can_read_site((storage.foldername(name))[1]::uuid));
+CREATE POLICY "Update insurance docs on visible sites" ON storage.objects FOR UPDATE TO authenticated USING (bucket_id = 'insurance-docs' AND can_read_site((storage.foldername(name))[1]::uuid));
+CREATE POLICY "Delete insurance docs on visible sites" ON storage.objects FOR DELETE TO authenticated USING (bucket_id = 'insurance-docs' AND can_read_site((storage.foldername(name))[1]::uuid));

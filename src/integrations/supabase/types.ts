@@ -98,6 +98,140 @@ export type Database = {
           },
         ]
       }
+      insurance_claims: {
+        Row: {
+          affected_equipment: string[]
+          attachments: Json
+          created_at: string
+          created_by: string
+          description: string
+          financial_loss: number
+          id: string
+          incident_date: string
+          incident_type: string
+          lost_energy_kwh: number
+          policy_id: string | null
+          repair_cost: number
+          site_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          affected_equipment?: string[]
+          attachments?: Json
+          created_at?: string
+          created_by: string
+          description?: string
+          financial_loss?: number
+          id?: string
+          incident_date: string
+          incident_type: string
+          lost_energy_kwh?: number
+          policy_id?: string | null
+          repair_cost?: number
+          site_id: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          affected_equipment?: string[]
+          attachments?: Json
+          created_at?: string
+          created_by?: string
+          description?: string
+          financial_loss?: number
+          id?: string
+          incident_date?: string
+          incident_type?: string
+          lost_energy_kwh?: number
+          policy_id?: string | null
+          repair_cost?: number
+          site_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "insurance_claims_policy_id_fkey"
+            columns: ["policy_id"]
+            isOneToOne: false
+            referencedRelation: "insurance_policies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "insurance_claims_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "sites"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      insurance_policies: {
+        Row: {
+          covered_equipment: string[]
+          covered_risks: string[]
+          created_at: string
+          created_by: string
+          deductible: number
+          documents: Json
+          end_date: string
+          id: string
+          insurance_type: string
+          insured_amount: number
+          policy_number: string
+          premium_annual: number
+          provider: string
+          site_id: string
+          start_date: string
+          updated_at: string
+        }
+        Insert: {
+          covered_equipment?: string[]
+          covered_risks?: string[]
+          created_at?: string
+          created_by: string
+          deductible?: number
+          documents?: Json
+          end_date: string
+          id?: string
+          insurance_type?: string
+          insured_amount?: number
+          policy_number: string
+          premium_annual?: number
+          provider: string
+          site_id: string
+          start_date: string
+          updated_at?: string
+        }
+        Update: {
+          covered_equipment?: string[]
+          covered_risks?: string[]
+          created_at?: string
+          created_by?: string
+          deductible?: number
+          documents?: Json
+          end_date?: string
+          id?: string
+          insurance_type?: string
+          insured_amount?: number
+          policy_number?: string
+          premium_annual?: number
+          provider?: string
+          site_id?: string
+          start_date?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "insurance_policies_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "sites"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notifications: {
         Row: {
           created_at: string

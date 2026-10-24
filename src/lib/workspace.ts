@@ -1,6 +1,7 @@
 import type { Site } from './energy';
 import type { HourPoint, Alert } from './fleet';
 import type { Crew, Job } from './dispatch';
+import type { Claim, Policy } from './insurance';
 
 export interface StoredSite extends Site {
   ownerId: string;
@@ -15,6 +16,8 @@ export interface Workspace {
   jobs: (Job & { reference: string })[];
   alerts: Alert[];
   maintenance: { site: StoredSite; panelManufacturer: string; last: string | null; next: string; basis: 'maintenance' | 'installation' }[];
+  policies: Policy[];
+  claims: Claim[];
 }
 export function workspaceHome(sites: StoredSite[], userId: string): StoredSite {
   const owned = sites.filter(s => s.ownerId === userId);
