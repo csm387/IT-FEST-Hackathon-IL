@@ -11,7 +11,10 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ConsoleRouteImport } from './routes/_console'
+import { Route as ConsoleBatteryRouteImport } from './routes/_console/battery'
 import { Route as ConsoleDashboardRouteImport } from './routes/_console/dashboard'
+import { Route as ConsoleFlowRouteImport } from './routes/_console/flow'
+import { Route as ConsoleForecastRouteImport } from './routes/_console/forecast'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,32 +25,63 @@ const ConsoleRoute = ConsoleRouteImport.update({
   id: '/_console',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ConsoleBatteryRoute = ConsoleBatteryRouteImport.update({
+  id: '/battery',
+  path: '/battery',
+  getParentRoute: () => ConsoleRoute,
+} as any)
 const ConsoleDashboardRoute = ConsoleDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => ConsoleRoute,
 } as any)
+const ConsoleFlowRoute = ConsoleFlowRouteImport.update({
+  id: '/flow',
+  path: '/flow',
+  getParentRoute: () => ConsoleRoute,
+} as any)
+const ConsoleForecastRoute = ConsoleForecastRouteImport.update({
+  id: '/forecast',
+  path: '/forecast',
+  getParentRoute: () => ConsoleRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/battery': typeof ConsoleBatteryRoute
   '/dashboard': typeof ConsoleDashboardRoute
+  '/flow': typeof ConsoleFlowRoute
+  '/forecast': typeof ConsoleForecastRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/battery': typeof ConsoleBatteryRoute
   '/dashboard': typeof ConsoleDashboardRoute
+  '/flow': typeof ConsoleFlowRoute
+  '/forecast': typeof ConsoleForecastRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_console': typeof ConsoleRouteWithChildren
+  '/_console/battery': typeof ConsoleBatteryRoute
   '/_console/dashboard': typeof ConsoleDashboardRoute
+  '/_console/flow': typeof ConsoleFlowRoute
+  '/_console/forecast': typeof ConsoleForecastRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard'
+  fullPaths: '/' | '/battery' | '/dashboard' | '/flow' | '/forecast'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard'
-  id: '__root__' | '/' | '/_console' | '/_console/dashboard'
+  to: '/' | '/battery' | '/dashboard' | '/flow' | '/forecast'
+  id:
+    | '__root__'
+    | '/'
+    | '/_console'
+    | '/_console/battery'
+    | '/_console/dashboard'
+    | '/_console/flow'
+    | '/_console/forecast'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -71,6 +105,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConsoleRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_console/battery': {
+      id: '/_console/battery'
+      path: '/battery'
+      fullPath: '/battery'
+      preLoaderRoute: typeof ConsoleBatteryRouteImport
+      parentRoute: typeof ConsoleRoute
+    }
     '/_console/dashboard': {
       id: '/_console/dashboard'
       path: '/dashboard'
@@ -78,15 +119,35 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConsoleDashboardRouteImport
       parentRoute: typeof ConsoleRoute
     }
+    '/_console/flow': {
+      id: '/_console/flow'
+      path: '/flow'
+      fullPath: '/flow'
+      preLoaderRoute: typeof ConsoleFlowRouteImport
+      parentRoute: typeof ConsoleRoute
+    }
+    '/_console/forecast': {
+      id: '/_console/forecast'
+      path: '/forecast'
+      fullPath: '/forecast'
+      preLoaderRoute: typeof ConsoleForecastRouteImport
+      parentRoute: typeof ConsoleRoute
+    }
   }
 }
 
 interface ConsoleRouteChildren {
+  ConsoleBatteryRoute: typeof ConsoleBatteryRoute
   ConsoleDashboardRoute: typeof ConsoleDashboardRoute
+  ConsoleFlowRoute: typeof ConsoleFlowRoute
+  ConsoleForecastRoute: typeof ConsoleForecastRoute
 }
 
 const ConsoleRouteChildren: ConsoleRouteChildren = {
+  ConsoleBatteryRoute: ConsoleBatteryRoute,
   ConsoleDashboardRoute: ConsoleDashboardRoute,
+  ConsoleFlowRoute: ConsoleFlowRoute,
+  ConsoleForecastRoute: ConsoleForecastRoute,
 }
 
 const ConsoleRouteWithChildren =
