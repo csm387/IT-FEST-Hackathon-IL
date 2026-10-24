@@ -1,3 +1,4 @@
+import { useWorkspace } from '@/components/solar/WorkspaceProvider';
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
@@ -25,15 +26,15 @@ export const Route = createFileRoute("/_console/dashboard")({
 type Period = "today" | "7d" | "30d" | "year" | "custom";
 
 function Dashboard() {
-  const site = homeSite();
+  const { home: site } = useWorkspace();
   const [period, setPeriod] = useState<Period>("today");
   const [customDays, setCustomDays] = useState(14);
   const today = useMemo(() => siteDay(site), [site]);
   const t = sumDay(today);
   const now = today[13];
   const selfUsed = t.solar - t.export;
-  const sites = getSites();
-  const alerts = buildAlerts().filter((a) => a.status !== "Resolved");
+  const { sites, alerts: savedAlerts } = useWorkspace();
+  const alerts = savedAlerts.filter((a) => a.status !== "Resolved");
   const { data: w } = useQuery(weatherQuery(site.lat, site.lng));
   const savings = selfUsed * TARIFF.retailRON;
   const exportRev = t.export * TARIFF.exportRON;
@@ -52,7 +53,7 @@ function Dashboard() {
 
   return (
     <div>
-      <PageHeader title="Good afternoon, Andrei" subtitle="Saturday, 24 October · 13:00" />
+      <PageHeader title={`Good afternoon, ${Route.useRouteContext().account.fullName || "there"}`} subtitle="Saturday, 24 October · 13:00" />
 
       {/* Hero */}
       <div className="grid gap-4 xl:grid-cols-3">

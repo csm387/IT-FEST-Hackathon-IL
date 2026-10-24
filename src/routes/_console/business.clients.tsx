@@ -1,3 +1,4 @@
+import { useWorkspace } from '@/components/solar/WorkspaceProvider';
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -16,16 +17,9 @@ export const Route = createFileRoute("/_console/business/clients")({
   component: Clients,
 });
 
-/** Until real inverters are connected, each client is shown with a simulated installation. */
-function simulatedSiteFor(id: string) {
-  const res = getSites().filter((s) => s.type === "Residential");
-  const pool = res.length ? res : getSites();
-  let h = 0; for (const c of id) h = (h * 31 + c.charCodeAt(0)) >>> 0;
-  return pool[h % pool.length];
-}
-
 function Clients() {
   const { account } = Route.useRouteContext();
+  const { sites } = useWorkspace();
   const { data: clients = [], isLoading } = useQuery({
     queryKey: ["clients", account.userId],
     queryFn: async () => {
@@ -46,12 +40,12 @@ function Clients() {
           <table className="w-full text-sm">
             <thead className="text-left text-xs text-muted-foreground"><tr><th className="pb-2">Client</th><th>Installation (simulated)</th><th>Status</th><th className="text-right">Health</th></tr></thead>
             <tbody>
-              {clients.map((c) => { const s = simulatedSiteFor(c.id); return (
+              {clients.map((c) => { const s = sites.find(site => site.ownerId === c.id); return (
                 <tr key={c.id} className="border-t border-border">
                   <td className="py-2 font-medium">{c.full_name || "Unnamed client"}<div className="text-xs text-muted-foreground">since {new Date(c.created_at).toLocaleDateString("ro-RO")}</div></td>
-                  <td><Link to="/sites/$id" params={{ id: s.id }} className="hover:underline">{s.kWp} kWp · {s.manufacturer}</Link><div className="text-xs text-muted-foreground">{s.city}</div></td>
-                  <td><StatusBadge status={s.status} /></td>
-                  <td className="num text-right">{healthScore(s)}</td>
+                  <td>{s ? <><Link to="/sites/$id" params={{ id: s.id }} className="hover:underline">{s.kWp} kWp · {s.manufacturer}</Link><div className="text-xs text-muted-foreground">{s.city}</div></> : "No installation"}</td>
+                  <td>{s && <StatusBadge status={s.status} />}</td>
+                  <td className="num text-right">{s ? healthScore(s) : "—"}</td>
                 </tr>); })}
             </tbody>
           </table>

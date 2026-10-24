@@ -1,3 +1,4 @@
+import { useWorkspace } from '@/components/solar/WorkspaceProvider';
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { Activity, AlertOctagon, Gauge, Zap, Coins, WifiOff } from "lucide-react";
@@ -22,10 +23,10 @@ const STATUSES: AlertStatus[] = ["New", "Investigating", "Scheduled", "Resolved"
 const stCls: Record<AlertStatus, string> = { New: "text-destructive", Investigating: "text-warning", Scheduled: "text-battery", Resolved: "text-solar" };
 
 function Ops() {
-  const sites = getSites();
-  const [alerts, setAlerts] = useState<Alert[]>(() => buildAlerts());
+  const { sites } = useWorkspace();
+  const { alerts, saveAlert } = useWorkspace();
   const [filter, setFilter] = useState<AlertStatus | "All">("All");
-  const update = (id: string, patch: Partial<Alert>) => setAlerts((xs) => xs.map((a) => (a.id === id ? { ...a, ...patch } : a)));
+  const update = (id: string, patch: Partial<Alert>) => { void saveAlert(id, patch); };
   const open = alerts.filter((a) => a.status !== "Resolved");
   const shown = filter === "All" ? alerts : alerts.filter((a) => a.status === filter);
   const avgHealth = Math.round(sites.reduce((a, s) => a + healthScore(s), 0) / sites.length);

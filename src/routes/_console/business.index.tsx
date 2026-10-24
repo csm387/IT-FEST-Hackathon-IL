@@ -1,3 +1,4 @@
+import { useWorkspace } from '@/components/solar/WorkspaceProvider';
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Building2, Gauge, AlertTriangle, Wallet, Sun, Truck } from "lucide-react";
 import { Kpi, PageHeader, Panel, StatusBadge, ron, fmt } from "@/components/solar/ui";
@@ -18,12 +19,13 @@ export const Route = createFileRoute("/_console/business/")({
 });
 
 function BusinessDashboard() {
-  const sites = getSites();
+  const { sites } = useWorkspace();
   const kWp = sites.reduce((a, s) => a + s.kWp, 0);
   const rows = sites.map((s) => { const t = sumDay(siteDay(s)); const lost = t.solar * (1 / Math.max(s.performance, 0.05) - 1); return { s, t, lost, h: healthScore(s) }; });
   const produced = rows.reduce((a, r) => a + r.t.solar, 0);
   const lostKWh = rows.reduce((a, r) => a + r.lost, 0);
-  const jobs = buildJobs(sites);
+  const { jobs: savedJobs } = useWorkspace();
+  const jobs = savedJobs.filter(j => j.status !== "Resolved");
   const worst = [...rows].sort((a, b) => a.h - b.h).slice(0, 6);
   const counts = (["normal", "under", "critical", "offline"] as Status[]).map((st) => [st, sites.filter((s) => s.status === st).length] as const);
 

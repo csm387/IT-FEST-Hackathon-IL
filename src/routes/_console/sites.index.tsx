@@ -1,3 +1,4 @@
+import { useWorkspace } from '@/components/solar/WorkspaceProvider';
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
@@ -18,7 +19,7 @@ export const Route = createFileRoute("/_console/sites/")({
 });
 
 function SitesPage() {
-  const sites = getSites();
+  const { sites } = useWorkspace();
   const [q, setQ] = useState("");
   const [cmp, setCmp] = useState<string[]>([]);
   const list = sites.filter((s) => `${s.name} ${s.city} ${s.manufacturer}`.toLowerCase().includes(q.toLowerCase()));

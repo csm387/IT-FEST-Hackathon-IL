@@ -1,3 +1,4 @@
+import { useWorkspace } from '@/components/solar/WorkspaceProvider';
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
@@ -22,7 +23,7 @@ export const Route = createFileRoute("/_console/forecast")({
 });
 
 function ForecastPage() {
-  const sites = getSites();
+  const { sites } = useWorkspace();
   const [id, setId] = useState(sites[0].id);
   const site = sites.find((s) => s.id === id)!;
   const { data: w, isLoading, isError } = useQuery(weatherQuery(site.lat, site.lng));

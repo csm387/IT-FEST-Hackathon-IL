@@ -1,3 +1,5 @@
+import { workspaceQuery } from '@/components/solar/WorkspaceProvider';
+import { useWorkspace } from '@/components/solar/WorkspaceProvider';
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useMemo } from "react";
 import { Area, CartesianGrid, ComposedChart, Legend, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
@@ -6,7 +8,7 @@ import { Kpi, Panel, SeverityChip, StatusBadge, axis, chartTooltip, fmt, ron } f
 import { buildAlerts, getSite, healthScore, siteDay, sumDay, TARIFF } from "@/lib/fleet";
 
 export const Route = createFileRoute("/_console/sites/$id")({
-  loader: ({ params }) => { const s = getSite(params.id); if (!s) throw notFound(); return { name: s.name, city: s.city, image: s.image }; },
+  loader: async ({ params, context }) => { const saved = await context.queryClient.ensureQueryData(workspaceQuery(context.account.userId)); const s = saved.sites.find(s => s.id === params.id); if (!s) throw notFound(); return { name: s.name, city: s.city, image: s.image }; },
   head: ({ loaderData }) => ({ meta: [
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary_large_image" },
@@ -20,19 +22,16 @@ export const Route = createFileRoute("/_console/sites/$id")({
   component: SiteDetail,
 });
 
-const history = [
-  { date: "2026-09-12", what: "Panel cleaning & visual inspection", who: "Ioana Marin" },
-  { date: "2026-06-03", what: "Inverter firmware update", who: "Andrei Popescu" },
-  { date: "2026-03-21", what: "Annual thermographic inspection", who: "Mihai Dumitru" },
-  { date: "2025-11-08", what: "String fuse replaced (string 2)", who: "Elena Stan" },
-];
 
 function SiteDetail() {
   const { id } = Route.useParams();
-  const s = getSite(id)!;
-  const day = useMemo(() => siteDay(s), [s]);
+  const { sites, alerts: savedAlerts } = useWorkspace();
+  const s = sites.find(site => site.id === id);
+  if (!s) throw notFound();
+  const history = s.serviceHistory;
+  const day = siteDay(s);
   const t = sumDay(day);
-  const alerts = buildAlerts().filter((a) => a.siteId === s.id);
+  const alerts = savedAlerts.filter((a) => a.siteId === s.id);
   const lostKWh = Math.max(0, t.expected - t.solar);
   return (
     <div>

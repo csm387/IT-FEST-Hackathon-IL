@@ -1,3 +1,4 @@
+import { useWorkspace } from '@/components/solar/WorkspaceProvider';
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { CalendarClock, Wrench, Cpu, LayoutGrid, ChevronRight, ExternalLink, Search, CircleHelp, ShieldCheck } from "lucide-react";
@@ -20,7 +21,6 @@ export const Route = createFileRoute("/_console/maintenance")({
   component: Maintenance,
 });
 
-const records = maintenanceDemo(getSites());
 const support: Record<string, string> = {
   Huawei: "https://solar.huawei.com/", SMA: "https://www.sma.de/en", Fronius: "https://www.fronius.com/en/solar-energy",
   Victron: "https://www.victronenergy.com/support-and-downloads", Growatt: "https://en.growatt.com/", SolarEdge: "https://www.solaredge.com/",
@@ -30,6 +30,7 @@ const tones = { overdue: "text-destructive bg-destructive/10", soon: "text-warni
 const date = (value: string) => new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", year: "numeric", timeZone: "UTC" }).format(new Date(`${value}T00:00:00Z`));
 
 function Maintenance() {
+  const { maintenance: records } = useWorkspace();
   const [view, setView] = useState<"inverter" | "panel">("inverter");
   const [query, setQuery] = useState("");
   const [manufacturer, setManufacturer] = useState("All");

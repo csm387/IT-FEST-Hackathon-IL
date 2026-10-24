@@ -1,3 +1,4 @@
+import { useWorkspace } from '@/components/solar/WorkspaceProvider';
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { ChevronLeft, ChevronRight, Play, Pause, Sun, Moon, CloudSun, Check } from "lucide-react";
@@ -20,7 +21,7 @@ export const Route = createFileRoute("/_console/flow")({
 });
 
 function FlowPage() {
-  const site = homeSite();
+  const { home: site } = useWorkspace();
   const day = useMemo(() => siteDay(site), [site]);
   const [hour, setHour] = useState(13);
   const p = day[hour];

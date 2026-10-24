@@ -1,3 +1,5 @@
+import { useSavedSetting } from '@/hooks/use-saved-setting';
+import { useWorkspace } from '@/components/solar/WorkspaceProvider';
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { AlertTriangle, ExternalLink, Scale } from "lucide-react";
@@ -25,7 +27,7 @@ const sources = [
 ];
 
 function Regs() {
-  const [i, setI] = useState({ capacityKW: 10, customer: "individual" as "individual" | "company", contract: "fixed", retail: 1.3, exportP: 0.45, date: "2026-10-24", importKWh: 300, exportKWh: 420 });
+  const [i, setI] = useSavedSetting(Route.useRouteContext().account.userId, "regulations", { capacityKW: 10, customer: "individual" as "individual" | "company", contract: "fixed", retail: 1.3, exportP: 0.45, date: "2026-10-24", importKWh: 300, exportKWh: 420 });
   const rule = compensationRule({ capacityKW: i.capacityKW, customer: i.customer, effectiveDate: i.date });
   const q = monthlyBill({ importKWh: i.importKWh, exportKWh: i.exportKWh, retailRON: i.retail, exportRON: i.exportP, mechanism: "quantity" });
   const fin = monthlyBill({ importKWh: i.importKWh, exportKWh: i.exportKWh, retailRON: i.retail, exportRON: i.exportP, mechanism: "financial" });
