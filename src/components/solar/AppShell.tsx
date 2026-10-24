@@ -5,7 +5,7 @@ import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGrou
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useNotifications } from "./notifications";
 import { cn } from "@/lib/utils";
-import gridpulseLogo from "@/assets/gridpulse-logo.png.asset.json";
+import gridpulseLogoLight from "@/assets/gridpulse-logo-light.png.asset.json";
 import gridpulseMark from "@/assets/gridpulse-mark.png.asset.json";
 
 const groups = [
@@ -28,13 +28,9 @@ const groups = [
 ] as const;
 
 export function Logo({ compact }: { compact?: boolean }) {
-  return (
-    <span className="flex items-center">
-      {compact
-        ? <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-white"><img src={gridpulseMark.url} alt="GridPulse" className="h-6 w-auto" /></span>
-        : <span className="flex h-9 items-center rounded-lg bg-white px-2.5"><img src={gridpulseLogo.url} alt="GridPulse" className="h-6 w-auto" /></span>}
-    </span>
-  );
+  return compact
+    ? <img src={gridpulseMark.url} alt="GridPulse" className="h-7 w-auto" />
+    : <img src={gridpulseLogoLight.url} alt="GridPulse" className="h-6 w-auto" />;
 }
 
 function AppSidebar() {
