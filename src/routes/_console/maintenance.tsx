@@ -2,6 +2,7 @@ import { useWorkspace } from '@/components/solar/WorkspaceProvider';
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { CalendarClock, Wrench, Cpu, LayoutGrid, ChevronRight, ExternalLink, Search, CircleHelp, ShieldCheck } from "lucide-react";
+// ShieldCheck also used for the Insurance section link in the header.
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { PageHeader } from "@/components/solar/ui";
@@ -60,7 +61,7 @@ function Maintenance() {
   const soon = records.filter((r) => maintenanceStatus(r.next, MAINTENANCE_DEMO_DATE) === "soon").length;
 
   return <div className="mx-auto max-w-7xl">
-    <PageHeader title="Updates & maintenance" subtitle="Equipment care · manufacturer information · service calendar" actions={<span className="flex items-center gap-2 rounded-md border border-border px-3 py-2 text-xs"><CalendarClock className="h-4 w-4 text-battery" />Every {DEFAULT_MAINTENANCE_MONTHS} months</span>} />
+    <PageHeader title="Updates & maintenance" subtitle="Equipment care · manufacturer information · service calendar" actions={<><span className="flex items-center gap-2 rounded-md border border-border px-3 py-2 text-xs"><CalendarClock className="h-4 w-4 text-battery" />Every {DEFAULT_MAINTENANCE_MONTHS} months</span><Button variant="outline" asChild><Link to="/insurance"><ShieldCheck />Insurance</Link></Button></>} />
     <div className="mb-6 flex flex-wrap items-center gap-x-3 gap-y-1 border-l-2 border-warning bg-warning/5 px-4 py-3 text-xs text-muted-foreground"><span className="font-semibold text-warning">Demo records</span> Sample panel manufacturers and service dates · as of {date(MAINTENANCE_DEMO_DATE)}. Software availability is not verified; no manufacturer connection.</div>
     <div className="mb-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
       {[{ label: "Installations", value: records.length, icon: LayoutGrid, tone: "text-foreground" }, { label: "Maintenance overdue", value: overdue, icon: Wrench, tone: "text-destructive" }, { label: "Due within 60 days", value: soon, icon: CalendarClock, tone: "text-warning" }, { label: "Software status", value: "Unverified", icon: CircleHelp, tone: "text-battery" }].map((k) => <div key={k.label} className="rounded-lg border border-border bg-card p-4"><k.icon className={cn("mb-4 h-5 w-5", k.tone)} /><p className={cn("num text-2xl font-semibold", k.tone)}>{k.value}</p><p className="mt-1 text-xs text-muted-foreground">{k.label}</p></div>)}
