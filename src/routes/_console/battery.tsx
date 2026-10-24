@@ -60,7 +60,7 @@ function BatteryPage() {
         <Panel title="PV capacity vs utilization">
           <div className="flex items-center gap-3"><Sun className="h-5 w-5 text-solar" /><div><p className="text-xs text-muted-foreground">Installed peak capacity</p><p className="num text-xl">{site.kWp} kWp</p></div></div>
           <div className="mt-4"><p className="text-xs text-muted-foreground">Current output</p><p className="num text-xl">{fmt(p.solar, 2)} kW</p></div>
-          <div className="mt-3 h-2 rounded-full bg-muted"><div className="h-2 rounded-full bg-gradient-primary" style={{ width: `${Math.min(100, (p.solar / site.kWp) * 100)}%` }} /></div>
+          <div className="mt-3 h-2 rounded-full bg-muted"><div className="h-2 rounded-full bg-solar" style={{ width: `${Math.min(100, (p.solar / site.kWp) * 100)}%` }} /></div>
           <p className="mt-2 text-xs text-muted-foreground">{Math.round((p.solar / site.kWp) * 100)}% of rated capacity</p>
           <p className="mt-6 rounded-xl border border-border p-3 text-xs text-muted-foreground">Solar panels produce electricity; they don't store it. Charging estimates refer to the battery, based on solar surplus, max charge power, remaining usable capacity and efficiency.</p>
         </Panel>

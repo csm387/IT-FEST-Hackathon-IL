@@ -53,7 +53,7 @@ const brands = ["Huawei", "SMA", "Fronius", "Victron", "Growatt", "SolarEdge", "
 function Landing() {
   return (
     <div className="min-h-screen">
-      <nav className="fixed inset-x-0 top-0 z-50 border-b border-border bg-background/60 backdrop-blur-xl">
+      <nav className="fixed inset-x-0 top-0 z-50 border-b border-border bg-background">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
           <Logo />
           <div className="hidden gap-6 text-sm text-muted-foreground md:flex">
@@ -68,12 +68,12 @@ function Landing() {
         <div className="absolute inset-0 bg-hero-fade" />
         <div className="relative mx-auto grid max-w-7xl gap-12 px-4 pb-24 pt-24 sm:px-6 lg:grid-cols-2 lg:pt-32">
           <div>
-            <span className="inline-flex items-center gap-2 rounded-full border border-border bg-background/50 px-3 py-1 text-xs text-muted-foreground backdrop-blur"><span className="h-1.5 w-1.5 rounded-full bg-solar" />Every Watt Matters</span>
+            <span className="inline-flex items-center gap-2 rounded-full border border-border bg-background/50 px-3 py-1 text-xs text-muted-foreground"><span className="h-1.5 w-1.5 rounded-full bg-solar" />Every Watt Matters</span>
             <h1 className="mt-6 text-5xl font-semibold leading-[1.05] sm:text-6xl">Your Energy.<br /><span className="text-solar">One Intelligent View.</span></h1>
             <p className="mt-6 max-w-xl text-lg text-muted-foreground">Monitor solar production, battery storage, energy consumption, and system health in real time. Turn energy data into smarter decisions.</p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link to="/dashboard" className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 font-semibold text-primary-foreground">Explore Dashboard<ArrowRight className="h-4 w-4" /></Link>
-              <a href="#how" className="rounded-xl border border-border bg-background/40 px-5 py-3 font-semibold backdrop-blur hover:bg-accent">How It Works</a>
+              <a href="#how" className="rounded-xl border border-border bg-background/40 px-5 py-3 font-semibold hover:bg-accent">How It Works</a>
             </div>
             <div className="mt-12 grid max-w-lg grid-cols-3 gap-6">
               <div><p className="text-3xl font-semibold text-solar"><Counter to={42} /></p><p className="text-xs text-muted-foreground">Sites monitored</p></div>

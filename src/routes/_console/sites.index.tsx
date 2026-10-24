@@ -41,7 +41,7 @@ function SitesPage() {
       )}
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {list.map((s) => (
-          <div key={s.id} className="glass group overflow-hidden rounded-2xl transition hover:-translate-y-1">
+          <div key={s.id} className="glass group overflow-hidden rounded-2xl">
             <div className="relative h-40 overflow-hidden">
               <img src={s.image} alt={`${s.name} solar installation`} loading="lazy" className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
               <div className="absolute left-3 top-3"><StatusBadge status={s.status} /></div>
