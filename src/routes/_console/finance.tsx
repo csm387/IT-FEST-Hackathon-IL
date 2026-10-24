@@ -1,8 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { Wallet, Wrench, ArrowDownToLine, Sun, Coins, Receipt, TrendingUp, Hourglass, TrendingDown } from "lucide-react";
-import { Kpi, PageHeader, Panel, axis, chartTooltip, ron } from "@/components/solar/ui";
+import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { Slider } from "@/components/ui/slider";
+import { cn } from "@/lib/utils";
+import { PageHeader, Panel, axis, chartTooltip, ron } from "@/components/solar/ui";
 import { getSites, siteDay, sumDay } from "@/lib/fleet";
 import { paybackYears, roiPercent } from "@/lib/energy";
 
@@ -16,7 +17,6 @@ export const Route = createFileRoute("/_console/finance")({
   component: Finance,
 });
 
-const inp = "h-9 w-24 rounded-lg border border-border bg-background/40 px-2 text-sm num";
 
 function Finance() {
   const [retail, setRetail] = useState(1.3);
