@@ -131,11 +131,11 @@ Proiectul a fost realizat folosind **[Lovable](https://lovable.dev/)** pentru de
 ### Pași
 
 ```bash
-# 1. Clonează repository-ul (înlocuiește URL-ul cu cel real)
-git clone URL_REPOSITORY
+# 1. Clonează repository-ul
+git clone https://github.com/csm387/IT-FEST-Hackathon-IL.git
 
 # 2. Intră în directorul proiectului
-cd NUME_REPOSITORY
+cd IT-FEST-Hackathon-IL
 
 # 3. Instalează dependențele
 npm install
